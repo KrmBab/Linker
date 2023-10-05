@@ -1,0 +1,231 @@
+import os
+import sys
+import ctypes
+from PySide6.QtGui import QDesktopServices, QDropEvent, QDragEnterEvent, QIcon
+from PySide6.QtCore import QStringListModel, QUrl, Qt, QSharedMemory, QStandardPaths, QFileInfo
+from PySide6.QtWidgets import QFileDialog, QMainWindow, QApplication, QDialog, QFileIconProvider
+
+from Widgets.Linker import Ui_MainWindow
+from .DataBase import DataBase
+
+from .CutomWidget import MessageBox, ContextMenu, StatusBar, Rename
+
+
+def check_single_instance():
+    # Define the path to the lock file
+    mutex_name = "LinkerMutex"
+    # Attempt to create a named mutex
+    mutex = ctypes.windll.kernel32.CreateMutexW(None, False, mutex_name)
+
+    # Check if the mutex already exists (another instance is running)
+    if ctypes.windll.kernel32.GetLastError() == 183:
+        print("Another instance of the application is already running.")
+        sys.exit(1)
+
+class Widget(QMainWindow):
+    __foldersCount = 0
+    __filesCount = 0
+    __appsCount = 0
+
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.ui = Ui_MainWindow()
+        self.ui.setupUi(self)
+
+
+        self.DB = DataBase("data/LinkerDB.db")
+
+        self.ui.button_add_folder.clicked.connect(self.add_folder)
+        self.ui.button_add_file.clicked.connect(self.add_file)
+        self.ui.button_add_app.clicked.connect(self.add_app)
+
+        self.model_folders = QStringListModel()
+        self.model_folders.setObjectName("folders")
+
+        self.model_apps = QStringListModel()
+        self.model_apps.setObjectName("apps")
+
+        self.model_files = QStringListModel()
+        self.model_files.setObjectName("files")
+
+        self.update_from_db()
+
+        self.ui.listView_folders.setModel(self.model_folders)
+        self.ui.listView_apps.setModel(self.model_apps)
+        self.ui.listView_files.setModel(self.model_files)
+
+        self.ui.listView_folders.doubleClicked.connect(self.open_item)
+        self.ui.listView_files.doubleClicked.connect(self.open_item)
+        self.ui.listView_apps.doubleClicked.connect(self.open_item)
+
+        self.ui.listView_folders.customContextMenuRequested.connect(self.show_context_menu)
+        self.ui.listView_files.customContextMenuRequested.connect(self.show_context_menu)
+        self.ui.listView_apps.customContextMenuRequested.connect(self.show_context_menu)
+
+        self.ui.listView_folders.clicked.connect(self.show_path)
+        self.ui.listView_apps.clicked.connect(self.show_path)
+        self.ui.listView_files.clicked.connect(self.show_path)
+
+        ########################
+
+        self.dialog_rename = Rename()
+        self.messageBox = MessageBox()
+        #########################
+        # Create a context menu
+        context_menu_actions = [("open", self.open_item), ("delete",self.delete_item), ("rename", self.rename_item)]
+        self.context_menu = ContextMenu(context_menu_actions)
+        self.statusbar = StatusBar(self.ui.statusbar)
+
+
+        self.__update_status()
+
+    def update_from_db(self):
+        self.model_files.setStringList(self.DB.get_all_names(self.model_files.objectName()))
+        self.model_apps.setStringList(self.DB.get_all_names(self.model_apps.objectName()))
+        self.model_folders.setStringList(self.DB.get_all_names(self.model_folders.objectName()))
+
+    def show_path(self):
+        items, model, label_icon, label_name = self.__selectedItems()
+        path = self.DB.get_item_path(model.objectName(), items[0].data())
+        self.statusbar.set_message(f"{model.objectName()} : {path}")
+
+        label_icon.setPixmap(self.get_exe_icon(path))
+        label_name.setText(os.path.basename(path))
+    def add_folder(self):
+        # Create a folder selection dialog
+        selected_folder = QFileDialog.getExistingDirectory()
+        if selected_folder != "":
+            folder_name = os.path.basename(selected_folder)
+            msg = self.DB.add_item(self.model_folders.objectName(), folder_name, selected_folder)
+            self.__addrow(self.model_folders, folder_name, msg)
+
+    def add_file(self):
+        # Create a folder selection dialog
+        selected_file = QFileDialog.getOpenFileName()
+        if selected_file[0] != "":
+            file_name = os.path.basename(selected_file[0])
+
+            if ".exe" not in file_name:
+                msg = self.DB.add_item(self.model_files.objectName(), file_name, selected_file[0])
+                self.__addrow(self.model_files, file_name, msg)
+            else:
+                # Show the warning message box and wait for user interaction
+                self.messageBox.set_warning("This is an .exe file it will be add to Apps list")
+                self.messageBox.exec()
+                msg = self.DB.add_item(self.model_apps.objectName(), file_name, selected_file[0])
+                self.__addrow(self.model_apps, file_name, msg)
+
+    def add_app(self):
+        # Create a folder selection dialog
+        selected_app = QFileDialog.getOpenFileName(filter="*.exe")
+        if selected_app[0] != "":
+            app_name = os.path.basename(selected_app[0])
+            msg = self.DB.add_item(self.model_apps.objectName(), app_name, selected_app[0])
+            self.__addrow(self.model_apps, app_name, msg)
+
+    def __update_status(self):
+        self.__filesCount = self.model_files.rowCount()
+        self.__foldersCount = self.model_folders.rowCount()
+        self.__appsCount = self.model_apps.rowCount()
+
+        self.statusbar.set_status(f"Apps : {self.__appsCount} | Files : {self.__filesCount} | Folders : "
+                                      f"{self.__foldersCount}")
+
+    def __addrow(self, model: QStringListModel, item: str, msg:str):
+        if msg != "":
+            self.messageBox.set_error(msg)
+            self.messageBox.exec()
+
+        else:
+            num = model.rowCount()
+            model.insertRow(model.rowCount())
+            index = model.index(model.rowCount() - 1)  # Get the index of the new row
+            model.setData(index, item)  # Set the data for the new item
+            self.__update_status()
+
+    def get_exe_icon(self,exe_path):
+        icon_provider = QFileIconProvider()
+        file_info = QFileInfo(exe_path)
+        icon = icon_provider.icon(file_info)
+        icon = icon.pixmap(32, 32)
+        return icon
+
+    def dragEnterEvent(self, event: QDragEnterEvent):
+        if event.mimeData().hasUrls():
+            event.acceptProposedAction()
+
+    def dropEvent(self, event: QDropEvent):
+        mime_data = event.mimeData()
+        if mime_data.hasUrls():
+            model = None
+            file_path = mime_data.urls()[0].toLocalFile()
+            file_name = os.path.basename(file_path)
+            if os.path.isdir(file_path):
+                model = self.model_folders
+            elif ".exe" not in file_name:
+                model = self.model_files
+            else:
+                model = self.model_apps
+
+            msg = self.DB.add_item(model.objectName(), file_name, file_path)
+            self.__addrow(model, file_name, msg)
+            if msg == "":
+                self.messageBox.set_info(f"item added to {model.objectName()} list")
+                self.messageBox.exec()
+
+    def __selectedItems(self) -> (None, QStringListModel):
+        items_files = self.ui.listView_files.selectedIndexes()
+        items_folder = self.ui.listView_folders.selectedIndexes()
+        items_apps = self.ui.listView_apps.selectedIndexes()
+
+        if items_files:       return items_files,  self.model_files, self.ui.label_iconFiles, self.ui.label_pathFiles
+        elif items_folder:    return items_folder, self.model_folders, self.ui.label_iconFolders, self.ui.label_pathFolders
+        elif items_apps:      return items_apps,   self.model_apps, self.ui.label_iconApps, self.ui.label_pathApps
+        else:                 return None, None
+
+    def rename_item(self):
+        items, model = self.__selectedItems()
+        old_name = items[0].data()
+        self.dialog_rename.lineEdit.setText(old_name)
+        save = self.dialog_rename.exec()
+        if save:
+            new_name = self.dialog_rename.lineEdit.text()
+            # if new_name != old_name:
+            self.DB.change_item_name(model.objectName(), old_name, new_name)
+            self.update_from_db()
+
+    def delete_item(self):
+        items, model = self.__selectedItems()
+
+        if items:
+            for itm in items:
+                self.DB.delete_item(model.objectName(), itm.data())
+                model.removeRow(itm.row())
+        self.__update_status()
+
+    def open_item(self):
+        items, model = self.__selectedItems()
+
+        for itm in items:
+            itm_path = self.DB.get_item_path(model.objectName(),itm.data())
+            itm_url = QUrl.fromLocalFile(itm_path)
+            if not QDesktopServices.openUrl(itm_url):
+                self.messageBox.set_error(f"Error: Failed to open {itm.data()} on '{itm_path}'")
+                self.messageBox.exec()
+
+    def keyPressEvent(self, event):
+        # This function is called when a key is pressed
+        key = event.key()
+        if key == Qt.Key.Key_Delete:
+            self.delete_item()
+        if key == 16777220:
+            self.open_item()
+
+    def show_context_menu(self, position):
+        listeviws = [self.ui.listView_folders, self.ui.listView_files, self.ui.listView_apps]
+        for lv in listeviws:
+            if lv != self.sender():
+                lv.clearSelection()
+
+        self.context_menu.show_context_menu(position, self.sender())
+
