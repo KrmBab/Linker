@@ -1,11 +1,13 @@
-from PySide6.QtGui import QIcon
-from PySide6.QtWidgets import QMenu, QStatusBar, QLabel, QListView, QMessageBox, QDialog, QComboBox
-from PySide6.QtCore import Qt
 from typing import Dict, Any
 
+from PySide6.QtCore import Qt
+from PySide6.QtGui import QIcon
+from PySide6.QtWidgets import QMenu, QStatusBar, QLabel, QListView, QMessageBox, QDialog, QComboBox
+
+from Widgets.Dialog_addToClass import Ui_Dialog_addToClass
 # from Classes.Manager import DBManager
 from Widgets.Dialog_rename import Ui_Dialog_rename
-from Widgets.Dialog_addToClass import Ui_Dialog_addToClass
+
 
 class MessageBox(QMessageBox):
     def __init__(self, parent=None):

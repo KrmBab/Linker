@@ -1,5 +1,6 @@
-import sqlite3 as db
 import os
+import sqlite3 as db
+
 
 class DataBase:
     def __init__(self, path: str):
@@ -96,7 +97,7 @@ class DataBase:
         # a = 0.
     def get_all_names(self, table_name: str, calss_name:str) -> [str]:
         # Construct the SQL query to select all names from the "app" table
-        if calss_name == "":
+        if calss_name == "All":
             query = f"SELECT name FROM {table_name}"
         else:
             query = f"SELECT name FROM {table_name} WHERE class == '{calss_name}'"

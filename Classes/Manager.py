@@ -1,13 +1,12 @@
 import os
-from typing import Dict, Any, List
+from typing import Dict
 
-from PySide6.QtCore import QStringListModel, QUrl, QFileInfo
+from PySide6.QtCore import QUrl, QFileInfo
 from PySide6.QtGui import QDesktopServices, QPixmap
 from PySide6.QtWidgets import QFileDialog, QFileIconProvider, QApplication, QListView, QLabel, QComboBox
 
-from Widgets.Dialog_rename import Ui_Dialog_rename
-from .DataBase import DataBase
 from .CutomWidget import MessageBox, Rename, AddToClass
+from .DataBase import DataBase
 
 
 class DBManager():
@@ -58,7 +57,7 @@ class DBManager():
     def update_class_fromDB(self):
         for cls in self.models_list.values():
             cls["class"].clear()
-            cls["class"].addItem("")
+            cls["class"].addItem("All")
             cls["class"].addItems(self.DB.get_class(cls["class"].objectName()))
         pass
 
@@ -104,6 +103,7 @@ class DBManager():
     def update_apps_fromDB(self):
         model = self.models_list["apps"]
         model["model"].setStringList(self.DB.get_all_names(model["model"].objectName(), model["class"].currentText()))
+        self.update_status()
 
     def update_folders_fromDB(self):
         model = self.models_list["folders"]

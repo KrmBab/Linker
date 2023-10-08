@@ -8,20 +8,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="fa1b8ebc-afac-4698-95a0-f143cfaf117e" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/GUI/Dialog_addToClass.ui" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Widgets/Dialog_addToClass.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dbnavigator.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dbnavigator.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+    <list default="true" id="fa1b8ebc-afac-4698-95a0-f143cfaf117e" name="Default Changelist" comment="update the app and add category">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Classes/CutomWidget.py" beforeDir="false" afterPath="$PROJECT_DIR$/Classes/CutomWidget.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Classes/DataBase.py" beforeDir="false" afterPath="$PROJECT_DIR$/Classes/DataBase.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Classes/MainWindow.py" beforeDir="false" afterPath="$PROJECT_DIR$/Classes/MainWindow.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Classes/Manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/Classes/Manager.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GUI/Linker.ui" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/Linker.ui" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Widgets/Dialog_addToClass.py" beforeDir="false" afterPath="$PROJECT_DIR$/Widgets/Dialog_addToClass.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Widgets/Dialog_rename.py" beforeDir="false" afterPath="$PROJECT_DIR$/Widgets/Dialog_rename.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Widgets/Linker.py" beforeDir="false" afterPath="$PROJECT_DIR$/Widgets/Linker.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/data/LinkerDB.db" beforeDir="false" afterPath="$PROJECT_DIR$/data/LinkerDB.db" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -205,6 +201,15 @@
       <option name="presentableId" value="Default" />
       <updated>1694984718632</updated>
     </task>
+    <task id="LOCAL-00001" summary="update the app and add category">
+      <option name="closed" value="true" />
+      <created>1696781757554</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1696781757554</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -247,14 +252,21 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
+    <MESSAGE value="update the app and add category" />
+    <option name="LAST_COMMIT_MESSAGE" value="update the app and add category" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Classes/Manager.py</url>
-          <line>44</line>
+          <line>43</line>
           <option name="timeStamp" value="13" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Classes/Manager.py</url>
+          <line>105</line>
+          <option name="timeStamp" value="15" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

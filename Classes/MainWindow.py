@@ -79,12 +79,12 @@ class Widget(DBManager, QMainWindow):
         self.ui.listView_apps.clicked.connect(self.show_path)
         self.ui.listView_files.clicked.connect(self.show_path)
 
-        # class_nameList = [self.ui.class_apps, self.ui.class_files, self.ui.class_folders]
+        self.update_class_fromDB()
+
         self.ui.class_apps.currentTextChanged.connect(self.update_apps_fromDB)
         self.ui.class_files.currentTextChanged.connect(self.update_files_fromDB)
         self.ui.class_folders.currentTextChanged.connect(self.update_folders_fromDB)
 
-        self.update_class_fromDB()
         self.update_from_db()
         #########################
         # Create a context menu
