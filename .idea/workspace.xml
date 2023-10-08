@@ -8,21 +8,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="fa1b8ebc-afac-4698-95a0-f143cfaf117e" name="Default Changelist" comment="update the linker">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Classes/CutomWidget.py" beforeDir="false" afterPath="$PROJECT_DIR$/Classes/CutomWidget.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Classes/DataBase.py" beforeDir="false" afterPath="$PROJECT_DIR$/Classes/DataBase.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Classes/MainWindow.py" beforeDir="false" afterPath="$PROJECT_DIR$/Classes/MainWindow.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Classes/Manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/Classes/Manager.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GUI/Dialog_addToClass.ui" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/Dialog_addToClass.ui" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GUI/Dialog_rename.ui" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/Dialog_rename.ui" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GUI/Linker.ui" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/Linker.ui" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Widgets/Dialog_addToClass.py" beforeDir="false" afterPath="$PROJECT_DIR$/Widgets/Dialog_addToClass.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Widgets/Dialog_rename.py" beforeDir="false" afterPath="$PROJECT_DIR$/Widgets/Dialog_rename.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Widgets/Linker.py" beforeDir="false" afterPath="$PROJECT_DIR$/Widgets/Linker.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/converter.py" beforeDir="false" afterPath="$PROJECT_DIR$/converter.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/LinkerDB.db" beforeDir="false" afterPath="$PROJECT_DIR$/data/LinkerDB.db" afterDir="false" />
-    </list>
+    <list default="true" id="fa1b8ebc-afac-4698-95a0-f143cfaf117e" name="Default Changelist" comment="use @dataclass" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -38,6 +24,12 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;KrmBab&quot;
+  }
+}</component>
   <component name="GitSEFilterConfiguration">
     <file-type-list>
       <filtered-out-file-type name="LOCAL_BRANCH" />
@@ -45,6 +37,14 @@
       <filtered-out-file-type name="TAG" />
       <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
     </file-type-list>
+  </component>
+  <component name="GithubPullRequestsUISettings">
+    <option name="selectedUrlAndAccountId">
+      <UrlAndAccount>
+        <option name="accountId" value="dfe86bea-1cde-4d0a-8ac8-9c08ba7b318b" />
+        <option name="url" value="https://github.com/KrmBab/Linker.git" />
+      </UrlAndAccount>
+    </option>
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -61,15 +61,15 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "C:/Users/KrM/Documents/PycharmProjects/Linker/GUI",
-    "run.code.analysis.last.selected.profile": "pProject Default",
-    "settings.editor.selected.configurable": "project.propVCSSupport.DirectoryMappings"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/KrM/Documents/PycharmProjects/Linker/GUI&quot;,
+    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;project.propVCSSupport.DirectoryMappings&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\KrM\Documents\PycharmProjects\Linker\GUI" />
@@ -221,7 +221,15 @@
       <option name="project" value="LOCAL" />
       <updated>1696784799678</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="use @dataclass">
+      <option name="closed" value="true" />
+      <created>1696800603192</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1696800603192</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -266,6 +274,7 @@
     </ignored-roots>
     <MESSAGE value="update the app and add category" />
     <MESSAGE value="update the linker" />
-    <option name="LAST_COMMIT_MESSAGE" value="update the linker" />
+    <MESSAGE value="use @dataclass" />
+    <option name="LAST_COMMIT_MESSAGE" value="use @dataclass" />
   </component>
 </project>

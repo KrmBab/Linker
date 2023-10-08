@@ -28,6 +28,7 @@ class Manager():
         self.dialog_rename = Rename_Dialog()
         self.dialog_rename.setWindowIcon(self.dataCenter.iconLinker)
         self.category_dialog = Category_Dialog(self.add_class, self.remove_class)
+        self.category_dialog.setWindowIcon(self.dataCenter.iconLinker)
 
         self.messageBox = MessageBox()
         self.clipboard = QApplication.clipboard()
