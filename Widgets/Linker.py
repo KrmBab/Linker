@@ -15,9 +15,10 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QAbstractItemView, QApplication, QFrame, QHBoxLayout,
-    QLabel, QListView, QMainWindow, QPushButton,
-    QSizePolicy, QStatusBar, QVBoxLayout, QWidget)
+from PySide6.QtWidgets import (QAbstractItemView, QApplication, QComboBox, QFrame,
+    QHBoxLayout, QLabel, QListView, QMainWindow,
+    QPushButton, QSizePolicy, QStatusBar, QVBoxLayout,
+    QWidget)
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -33,14 +34,31 @@ class Ui_MainWindow(object):
         MainWindow.setStyleSheet(u"*{\n"
 "color: #fff\n"
 "}\n"
-"QPushButton:hover { \n"
+"QComboBox{\n"
+"		background-color: rgb(74, 74, 74);\n"
+"	border-radius: 5px;\n"
+"	padding:5px;\n"
+"}\n"
+"\n"
+"QComboBox:hover { \n"
 "background-color: rgb(47, 47, 47); \n"
 "}\n"
-"QListView::item {\n"
-"border: none;\n"
+"QComboBox QAbstractItemView {\n"
+"	background-color: rgb(47, 47, 47); \n"
+"   border: none;\n"
 "   border: 1px solid rgb(189, 189, 189);\n"
 "	border-radius: 5px;\n"
-"	padding:8px;\n"
+"	padding:5px;\n"
+"}\n"
+"\n"
+"QComboBox::drop-down{\n"
+"	background-color: rgb(47, 47, 47); \n"
+"	border-radius: 5px;\n"
+"	padding:5px;\n"
+"}\n"
+"\n"
+"QPushButton:hover { \n"
+"background-color: rgb(47, 47, 47); \n"
 "}\n"
 "QListView::item:hover {\n"
 "    background-color: rgb(120, 120, 120);\n"
@@ -64,7 +82,8 @@ class Ui_MainWindow(object):
 "\n"
 "#centralwidget{\n"
 "	background-color: rgb(74, 74, 74);\n"
-"}\n"
+""
+                        "}\n"
 "\n"
 "#button_add_file{\n"
 "	border: 1px solid rgb(97, 131, 255);\n"
@@ -83,8 +102,18 @@ class Ui_MainWindow(object):
 "	padding:8px;\n"
 "}\n"
 "\n"
-"#lis"
-                        "tView_folders{\n"
+"#class_files{\n"
+"	border: 1px solid rgb(97, 131, 255);\n"
+"}\n"
+"#class_apps{\n"
+"	border: 1px solid rgb(52, 218, 2)\n"
+"}\n"
+"\n"
+"#class_folders{\n"
+"	border: 1px solid rgb(216, 0, 4);\n"
+"}\n"
+"\n"
+"#listView_folders{\n"
 "background-color: rgb(49, 49, 49);\n"
 "border: 1px solid rgb(216, 0, 4);\n"
 "	border-radius: 5px;\n"
@@ -99,6 +128,26 @@ class Ui_MainWindow(object):
 "#listView_apps{\n"
 "background-color: rgb(49, 49, 49);\n"
 "border: 1px solid rgb(52, 218, 2);\n"
+"	border-radius: 5px;\n"
+"	padding:8px;\n"
+"}\n"
+"\n"
+"#listView_folde"
+                        "rs:item{\n"
+"border: none;\n"
+"   border: 1px solid rgb(189, 189, 189);\n"
+"	border-radius: 5px;\n"
+"	padding:8px;\n"
+"}\n"
+"#listView_files:item{\n"
+"border: none;\n"
+"   border: 1px solid rgb(189, 189, 189);\n"
+"	border-radius: 5px;\n"
+"	padding:8px;\n"
+"}\n"
+"#listView_apps:item{\n"
+"border: none;\n"
+"   border: 1px solid rgb(189, 189, 189);\n"
 "	border-radius: 5px;\n"
 "	padding:8px;\n"
 "}")
@@ -136,6 +185,11 @@ class Ui_MainWindow(object):
         self.line_5.setFrameShadow(QFrame.Sunken)
 
         self.verticalLayout_2.addWidget(self.line_5)
+
+        self.class_apps = QComboBox(self.frame_apps)
+        self.class_apps.setObjectName(u"class_apps")
+
+        self.verticalLayout_2.addWidget(self.class_apps)
 
         self.listView_apps = QListView(self.frame_apps)
         self.listView_apps.setObjectName(u"listView_apps")
@@ -203,6 +257,11 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_3.addWidget(self.line_2)
 
+        self.class_files = QComboBox(self.frame_files)
+        self.class_files.setObjectName(u"class_files")
+
+        self.verticalLayout_3.addWidget(self.class_files)
+
         self.listView_files = QListView(self.frame_files)
         self.listView_files.setObjectName(u"listView_files")
         self.listView_files.setFont(font1)
@@ -263,6 +322,11 @@ class Ui_MainWindow(object):
         self.line.setFrameShadow(QFrame.Sunken)
 
         self.verticalLayout_4.addWidget(self.line)
+
+        self.class_folders = QComboBox(self.frame_folders)
+        self.class_folders.setObjectName(u"class_folders")
+
+        self.verticalLayout_4.addWidget(self.class_folders)
 
         self.listView_folders = QListView(self.frame_folders)
         self.listView_folders.setObjectName(u"listView_folders")

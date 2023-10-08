@@ -12,19 +12,62 @@ class DataBase:
         self.__mydb = db.connect(self.__path)
         self.__cursor = self.__mydb.cursor()
 
-        query = lambda table : \
+        query_itms = lambda table : \
             f'''
                 CREATE TABLE IF NOT EXISTS {table} (
                     "name"	TEXT NOT NULL UNIQUE,
                     "path"	TEXT NOT NULL UNIQUE,
-                    PRIMARY KEY("name")
+                    "class"	TEXT,
+                    FOREIGN KEY("class") REFERENCES "class_apps"("class_name"),
+                    UNIQUE("name")
                 )
             '''
-        [self.__cursor.execute(query(tbl)) for tbl in ["apps","files","folders"]]
+        query_class = lambda table_class: \
+            f'''
+                CREATE TABLE IF NOT EXISTS {table_class} (
+                    "class_name"	TEXT NOT NULL UNIQUE,
+                    PRIMARY KEY("class_name")
+                )
+            '''
+
+        [self.__cursor.execute(query_itms(tbl)) for tbl in ["apps","files","folders"]]
+        [self.__cursor.execute(query_class(cls)) for cls in ["class_apps", "class_files", "class_folders"]]
         self.__mydb.commit()
 
     def __del__(self):
         self.__mydb.close()
+
+    def get_class(self, className:str):
+        # Construct the SQL query to select all names from the "app" table
+        query = f"SELECT class_name FROM {className}"
+        # Execute the query to retrieve all names
+        self.__cursor.execute(query)
+        # Fetch all results and store them in an array
+        return [row[0] for row in self.__cursor.fetchall()]
+
+    def set_class(self, table: str, name: str, class_name: str) -> str:
+        try:
+            query = f"UPDATE {table} SET class = '{class_name}' WHERE name = '{name}'"
+            self.commit(query)
+            return None
+        except:
+            return f"{name} is already exist on you {table} list"
+
+    def add_class(self, table: str, class_name: str) -> str:
+        try:
+            query = f"INSERT INTO {table} (class_name) VALUES ('{class_name}')"
+            self.commit(query)
+            return None
+        except:
+            return f"{class_name} is already exist on you {table} list"
+
+    def remove_class(self, table: str, class_name: str) -> str:
+        try:
+            query = f"DELETE FROM {table} WHERE class_name = '{class_name}'"
+            self.commit(query)
+            return None
+        except:
+            return f"error remove {class_name} from {table}"
 
     def add_item(self, table: str, name: str, path: str) -> str:
         try:
@@ -51,13 +94,17 @@ class DataBase:
             print(f"SQLite error: {e}")
 
         # a = 0.
-    def get_all_names(self, table: str) -> [str]:
+    def get_all_names(self, table_name: str, calss_name:str) -> [str]:
         # Construct the SQL query to select all names from the "app" table
-        query = f"SELECT name FROM {table}"
+        if calss_name == "":
+            query = f"SELECT name FROM {table_name}"
+        else:
+            query = f"SELECT name FROM {table_name} WHERE class == '{calss_name}'"
         # Execute the query to retrieve all names
         self.__cursor.execute(query)
         # Fetch all results and store them in an array
-        return [row[0] for row in self.__cursor.fetchall()]
+        k = [row[0] for row in self.__cursor.fetchall()]
+        return k
 
     def commit(self, query: str):
         self.__cursor.execute(query)

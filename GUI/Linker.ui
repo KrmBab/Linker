@@ -30,14 +30,31 @@
    <string notr="true">*{
 color: #fff
 }
-QPushButton:hover { 
+QComboBox{
+		background-color: rgb(74, 74, 74);
+	border-radius: 5px;
+	padding:5px;
+}
+
+QComboBox:hover { 
 background-color: rgb(47, 47, 47); 
 }
-QListView::item {
-border: none;
+QComboBox QAbstractItemView {
+	background-color: rgb(47, 47, 47); 
+   border: none;
    border: 1px solid rgb(189, 189, 189);
 	border-radius: 5px;
-	padding:8px;
+	padding:5px;
+}
+
+QComboBox::drop-down{
+	background-color: rgb(47, 47, 47); 
+	border-radius: 5px;
+	padding:5px;
+}
+
+QPushButton:hover { 
+background-color: rgb(47, 47, 47); 
 }
 QListView::item:hover {
     background-color: rgb(120, 120, 120);
@@ -80,6 +97,17 @@ background-color: rgb(60, 60, 60);
 	padding:8px;
 }
 
+#class_files{
+	border: 1px solid rgb(97, 131, 255);
+}
+#class_apps{
+	border: 1px solid rgb(52, 218, 2)
+}
+
+#class_folders{
+	border: 1px solid rgb(216, 0, 4);
+}
+
 #listView_folders{
 background-color: rgb(49, 49, 49);
 border: 1px solid rgb(216, 0, 4);
@@ -95,6 +123,25 @@ border: 1px solid rgb(97, 131, 255);
 #listView_apps{
 background-color: rgb(49, 49, 49);
 border: 1px solid rgb(52, 218, 2);
+	border-radius: 5px;
+	padding:8px;
+}
+
+#listView_folders:item{
+border: none;
+   border: 1px solid rgb(189, 189, 189);
+	border-radius: 5px;
+	padding:8px;
+}
+#listView_files:item{
+border: none;
+   border: 1px solid rgb(189, 189, 189);
+	border-radius: 5px;
+	padding:8px;
+}
+#listView_apps:item{
+border: none;
+   border: 1px solid rgb(189, 189, 189);
 	border-radius: 5px;
 	padding:8px;
 }</string>
@@ -161,6 +208,9 @@ border: 1px solid rgb(52, 218, 2);
              <enum>Qt::Horizontal</enum>
             </property>
            </widget>
+          </item>
+          <item>
+           <widget class="QComboBox" name="class_apps"/>
           </item>
           <item>
            <widget class="QListView" name="listView_apps">
@@ -287,6 +337,9 @@ border: 1px solid rgb(52, 218, 2);
              <enum>Qt::Horizontal</enum>
             </property>
            </widget>
+          </item>
+          <item>
+           <widget class="QComboBox" name="class_files"/>
           </item>
           <item>
            <widget class="QListView" name="listView_files">
@@ -416,6 +469,9 @@ border: 1px solid rgb(52, 218, 2);
              <enum>Qt::Horizontal</enum>
             </property>
            </widget>
+          </item>
+          <item>
+           <widget class="QComboBox" name="class_folders"/>
           </item>
           <item>
            <widget class="QListView" name="listView_folders">

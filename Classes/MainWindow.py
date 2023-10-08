@@ -22,13 +22,15 @@ def check_single_instance():
         print("Another instance of the application is already running.")
         sys.exit(1)
 
+
 class Widget(DBManager, QMainWindow):
     __foldersCount = 0
     __filesCount = 0
     __appsCount = 0
     models_list = None
+
     def __init__(self, parent=None):
-        super().__init__(self.models_list, self.__selectedItems)
+        super().__init__()
         QMainWindow.__init__(self, parent)
 
         self.ui = Ui_MainWindow()
@@ -52,11 +54,14 @@ class Widget(DBManager, QMainWindow):
         self.model_files = QStringListModel()
         self.model_files.setObjectName("files")
 
-        self.models_list = {self.model_folders.objectName():self.model_folders,
-                            self.model_apps.objectName():self.model_apps,
-                            self.model_files.objectName(): self.model_files,}
-
-        self.update_from_db()
+        self.models_list = {self.model_folders.objectName(): {"model":self.model_folders, "class":self.ui.class_folders},
+                            self.model_apps.objectName(): {"model":self.model_apps, "class":self.ui.class_apps},
+                            self.model_files.objectName(): {"model":self.model_files, "class":self.ui.class_files,} }
+        self.listsViews = [
+            {"list": self.ui.listView_apps, "icon": self.ui.label_iconApps, "path": self.ui.label_pathApps},
+            {"list": self.ui.listView_folders, "icon": self.ui.label_iconFolders, "path": self.ui.label_pathFolders},
+            {"list": self.ui.listView_files, "icon": self.ui.label_iconFiles, "path": self.ui.label_pathFiles}
+        ]
 
         self.ui.listView_folders.setModel(self.model_folders)
         self.ui.listView_apps.setModel(self.model_apps)
@@ -74,9 +79,17 @@ class Widget(DBManager, QMainWindow):
         self.ui.listView_apps.clicked.connect(self.show_path)
         self.ui.listView_files.clicked.connect(self.show_path)
 
+        # class_nameList = [self.ui.class_apps, self.ui.class_files, self.ui.class_folders]
+        self.ui.class_apps.currentTextChanged.connect(self.update_apps_fromDB)
+        self.ui.class_files.currentTextChanged.connect(self.update_files_fromDB)
+        self.ui.class_folders.currentTextChanged.connect(self.update_folders_fromDB)
+
+        self.update_class_fromDB()
+        self.update_from_db()
         #########################
         # Create a context menu
-        context_menu_actions = {"Open": self.open_item,
+        context_menu_actions = {"Add_to_category" : self.add_toClass,
+                                "Open": self.open_item,
                                 "Open_path": self.open_item_dir,
                                 "Copy_path": self.copy_item_path,
                                 "Rename": self.rename_item,
@@ -86,8 +99,6 @@ class Widget(DBManager, QMainWindow):
         self.statusbar = StatusBar(self.ui.statusbar)
 
         self.update_status()
-
-
 
     def dragEnterEvent(self, event: QDragEnterEvent):
         if event.mimeData().hasUrls():
@@ -112,17 +123,6 @@ class Widget(DBManager, QMainWindow):
                 self.messageBox.set_info(f"item added to {model.objectName()} list")
                 self.messageBox.exec()
 
-    def __selectedItems(self) -> (None, QStringListModel):
-        items_files = self.ui.listView_files.selectedIndexes()
-        items_folder = self.ui.listView_folders.selectedIndexes()
-        items_apps = self.ui.listView_apps.selectedIndexes()
-
-        if items_files:       return items_files,  self.model_files, self.ui.label_iconFiles, self.ui.label_pathFiles
-        elif items_folder:    return items_folder, self.model_folders, self.ui.label_iconFolders, self.ui.label_pathFolders
-        elif items_apps:      return items_apps,   self.model_apps, self.ui.label_iconApps, self.ui.label_pathApps
-        else:                 return None, None, None, None
-
-
     def keyPressEvent(self, event):
         # This function is called when a key is pressed
         key = event.key()
@@ -139,4 +139,3 @@ class Widget(DBManager, QMainWindow):
 
         self.show_path()
         self.context_menu.show_context_menu(position, self.sender())
-

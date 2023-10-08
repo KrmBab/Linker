@@ -1,9 +1,11 @@
 from PySide6.QtGui import QIcon
-from PySide6.QtWidgets import QMenu, QStatusBar, QLabel, QListView, QMessageBox, QDialog
+from PySide6.QtWidgets import QMenu, QStatusBar, QLabel, QListView, QMessageBox, QDialog, QComboBox
 from PySide6.QtCore import Qt
 from typing import Dict, Any
-from Widgets.Dialog_rename import Ui_Dialog_rename
 
+# from Classes.Manager import DBManager
+from Widgets.Dialog_rename import Ui_Dialog_rename
+from Widgets.Dialog_addToClass import Ui_Dialog_addToClass
 
 class MessageBox(QMessageBox):
     def __init__(self, parent=None):
@@ -53,6 +55,22 @@ class Rename(QDialog, Ui_Dialog_rename):
         self.button_save.clicked.connect(self.accept)
         self.button_cancel.clicked.connect(self.reject)
 
+
+class AddToClass(QDialog, Ui_Dialog_addToClass):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.setupUi(self)
+        # Connect your button signals to functions here
+        self.button_save.clicked.connect(self.accept)
+        self.button_cancel.clicked.connect(self.reject)
+    def update_items(self, itmes:[str]):
+        self.class_items.addItems(itmes)
+    def get_class(self):
+        return self.class_items.currentText()
+    def rest_items(self):
+        self.class_items.clear()
+    # def add_class(self, className:str):
+    #
 class StatusBar():
     def __init__(self, statusbar:QStatusBar):
         self.statusbar = statusbar
@@ -65,6 +83,21 @@ class StatusBar():
 
     def set_status(self, message):
         self.statusbar.showMessage(message)
+
+
+class ComboBox:
+    def __init__(self, comboBoxs:Dict[str, QComboBox], database):
+        self.DataBase = database
+
+    def update_class(self):
+        pass
+
+    def add_class(self):
+        pass
+
+    def delete_class(self):
+        pass
+
 class ContextMenu(QMenu):
     def __init__(self, actions:Dict[str, Any]):
         super().__init__(None)
