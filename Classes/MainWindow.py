@@ -8,7 +8,8 @@ from PySide6.QtWidgets import QMainWindow
 
 from Widgets.Linker import Ui_MainWindow
 from .CutomWidget import ContextMenu, StatusBar
-from .Manager import DBManager
+from .DataBase import DataBase
+from .Manager import Manager, Data_center
 
 
 def check_single_instance():
@@ -23,14 +24,12 @@ def check_single_instance():
         sys.exit(1)
 
 
-class Widget(DBManager, QMainWindow):
+class Widget(Manager, QMainWindow):
     __foldersCount = 0
     __filesCount = 0
     __appsCount = 0
-    models_list = None
 
     def __init__(self, parent=None):
-        super().__init__()
         QMainWindow.__init__(self, parent)
 
         self.ui = Ui_MainWindow()
@@ -39,11 +38,6 @@ class Widget(DBManager, QMainWindow):
 
         self.ui.setupUi(self)
         self.setWindowIcon(icon)
-        self.dialog_rename.setWindowIcon(icon)
-
-        self.ui.button_add_folder.clicked.connect(self.add_folder)
-        self.ui.button_add_file.clicked.connect(self.add_file)
-        self.ui.button_add_app.clicked.connect(self.add_app)
 
         self.model_folders = QStringListModel()
         self.model_folders.setObjectName("folders")
@@ -54,19 +48,31 @@ class Widget(DBManager, QMainWindow):
         self.model_files = QStringListModel()
         self.model_files.setObjectName("files")
 
-        self.models_list = {self.model_folders.objectName(): {"model":self.model_folders, "class":self.ui.class_folders},
-                            self.model_apps.objectName(): {"model":self.model_apps, "class":self.ui.class_apps},
-                            self.model_files.objectName(): {"model":self.model_files, "class":self.ui.class_files,} }
-        self.listsViews = [
+        models_list = {self.model_folders.objectName(): {"model": self.model_folders, "class": self.ui.class_folders},
+                       self.model_apps.objectName(): {"model": self.model_apps, "class": self.ui.class_apps},
+                       self.model_files.objectName(): {"model": self.model_files, "class": self.ui.class_files, }}
+        listsViews = [
             {"list": self.ui.listView_apps, "icon": self.ui.label_iconApps, "path": self.ui.label_pathApps},
             {"list": self.ui.listView_folders, "icon": self.ui.label_iconFolders, "path": self.ui.label_pathFolders},
             {"list": self.ui.listView_files, "icon": self.ui.label_iconFiles, "path": self.ui.label_pathFiles}
         ]
 
+        dataBase = DataBase("data/LinkerDB.db")
+        statusbar = StatusBar(self.ui.statusbar)
+        # Data_center()
+        dataCenter = Data_center(models_dict=models_list, listsViews_dict=listsViews,
+                                 dataBase=dataBase, iconLinker=icon, statusbar=statusbar)
+        super().__init__(dataCenter)
+
+        self.ui.button_add_folder.clicked.connect(self.add_folder)
+        self.ui.button_add_file.clicked.connect(self.add_file)
+        self.ui.button_add_app.clicked.connect(self.add_app)
+
         self.ui.listView_folders.setModel(self.model_folders)
         self.ui.listView_apps.setModel(self.model_apps)
         self.ui.listView_files.setModel(self.model_files)
 
+        # connect to functions
         self.ui.listView_folders.doubleClicked.connect(self.open_item)
         self.ui.listView_files.doubleClicked.connect(self.open_item)
         self.ui.listView_apps.doubleClicked.connect(self.open_item)
@@ -79,8 +85,11 @@ class Widget(DBManager, QMainWindow):
         self.ui.listView_apps.clicked.connect(self.show_path)
         self.ui.listView_files.clicked.connect(self.show_path)
 
+        ########
         self.update_class_fromDB()
+        ########
 
+        # connect to functions
         self.ui.class_apps.currentTextChanged.connect(self.update_apps_fromDB)
         self.ui.class_files.currentTextChanged.connect(self.update_files_fromDB)
         self.ui.class_folders.currentTextChanged.connect(self.update_folders_fromDB)
@@ -88,7 +97,7 @@ class Widget(DBManager, QMainWindow):
         self.update_from_db()
         #########################
         # Create a context menu
-        context_menu_actions = {"Add_to_category" : self.add_toClass,
+        context_menu_actions = {"+Add_to_category+": self.add_toClass,
                                 "Open": self.open_item,
                                 "Open_path": self.open_item_dir,
                                 "Copy_path": self.copy_item_path,
@@ -96,7 +105,6 @@ class Widget(DBManager, QMainWindow):
                                 "Delete": self.delete_item}
 
         self.context_menu = ContextMenu(context_menu_actions)
-        self.statusbar = StatusBar(self.ui.statusbar)
 
         self.update_status()
 

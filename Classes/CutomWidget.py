@@ -49,7 +49,7 @@ class MessageBox(QMessageBox):
         self.setWindowTitle("Information")
 
 
-class Rename(QDialog, Ui_Dialog_rename):
+class Rename_Dialog(QDialog, Ui_Dialog_rename):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setupUi(self)
@@ -58,23 +58,33 @@ class Rename(QDialog, Ui_Dialog_rename):
         self.button_cancel.clicked.connect(self.reject)
 
 
-class AddToClass(QDialog, Ui_Dialog_addToClass):
-    def __init__(self, parent=None):
+class Category_Dialog(QDialog, Ui_Dialog_addToClass):
+    def __init__(self, add_class_method, remove_class_method, parent=None):
         super().__init__(parent)
         self.setupUi(self)
         # Connect your button signals to functions here
+        self.connect_buttons(add_class_method, remove_class_method)
+
+    def connect_buttons(self, add_class_method, remove_class_method):
         self.button_save.clicked.connect(self.accept)
         self.button_cancel.clicked.connect(self.reject)
-    def update_items(self, itmes:[str]):
+        self.button_addClass.clicked.connect(add_class_method)
+        self.button_removeClass.clicked.connect(remove_class_method)
+
+    def update_items(self, itmes: [str]):
         self.class_items.addItems(itmes)
+
     def get_class(self):
         return self.class_items.currentText()
+
     def rest_items(self):
         self.class_items.clear()
     # def add_class(self, className:str):
     #
+
+
 class StatusBar():
-    def __init__(self, statusbar:QStatusBar):
+    def __init__(self, statusbar: QStatusBar):
         self.statusbar = statusbar
         self.path_label = QLabel()
         self.path_label.setTextInteractionFlags(Qt.TextSelectableByMouse)
@@ -88,7 +98,7 @@ class StatusBar():
 
 
 class ComboBox:
-    def __init__(self, comboBoxs:Dict[str, QComboBox], database):
+    def __init__(self, comboBoxs: Dict[str, QComboBox], database):
         self.DataBase = database
 
     def update_class(self):
@@ -100,8 +110,9 @@ class ComboBox:
     def delete_class(self):
         pass
 
+
 class ContextMenu(QMenu):
-    def __init__(self, actions:Dict[str, Any]):
+    def __init__(self, actions: Dict[str, Any]):
         super().__init__(None)
         self.setObjectName("context_menu")
         self.actions = actions

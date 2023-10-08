@@ -13,7 +13,7 @@ class DataBase:
         self.__mydb = db.connect(self.__path)
         self.__cursor = self.__mydb.cursor()
 
-        query_itms = lambda table : \
+        query_itms = lambda table: \
             f'''
                 CREATE TABLE IF NOT EXISTS {table} (
                     "name"	TEXT NOT NULL UNIQUE,
@@ -31,14 +31,14 @@ class DataBase:
                 )
             '''
 
-        [self.__cursor.execute(query_itms(tbl)) for tbl in ["apps","files","folders"]]
+        [self.__cursor.execute(query_itms(tbl)) for tbl in ["apps", "files", "folders"]]
         [self.__cursor.execute(query_class(cls)) for cls in ["class_apps", "class_files", "class_folders"]]
         self.__mydb.commit()
 
     def __del__(self):
         self.__mydb.close()
 
-    def get_class(self, className:str):
+    def get_class(self, className: str):
         # Construct the SQL query to select all names from the "app" table
         query = f"SELECT class_name FROM {className}"
         # Execute the query to retrieve all names
@@ -87,7 +87,7 @@ class DataBase:
         self.__cursor.execute(query)
         return self.__cursor.fetchone()[0]  # Fetch one row
 
-    def change_item_name(self, table:str ,old_name: str, new_name:str):
+    def change_item_name(self, table: str, old_name: str, new_name: str):
         query = f"UPDATE {table} SET name = '{new_name}' WHERE name = '{old_name}'"
         try:
             self.commit(query)
@@ -95,7 +95,8 @@ class DataBase:
             print(f"SQLite error: {e}")
 
         # a = 0.
-    def get_all_names(self, table_name: str, calss_name:str) -> [str]:
+
+    def get_all_names(self, table_name: str, calss_name: str) -> [str]:
         # Construct the SQL query to select all names from the "app" table
         if calss_name == "All":
             query = f"SELECT name FROM {table_name}"

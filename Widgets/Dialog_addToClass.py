@@ -14,6 +14,7 @@ from PySide6.QtWidgets import (QComboBox, QFrame,
                                QHBoxLayout, QPushButton, QVBoxLayout,
                                QWidget)
 
+
 class Ui_Dialog_addToClass(object):
     def setupUi(self, Dialog_addToClass):
         if not Dialog_addToClass.objectName():
@@ -25,59 +26,59 @@ class Ui_Dialog_addToClass(object):
         icon.addFile(u"../_internal/Static/link.ico", QSize(), QIcon.Normal, QIcon.Off)
         Dialog_addToClass.setWindowIcon(icon)
         Dialog_addToClass.setStyleSheet(u"*{\n"
-"background-color: rgb(74, 74, 74);\n"
-"color: #fff\n"
-"}\n"
-"QPushButton:hover { \n"
-"background-color: rgb(47, 47, 47); \n"
-"}\n"
-"\n"
-"QComboBox:hover { \n"
-"background-color: rgb(47, 47, 47); \n"
-"}\n"
-"QComboBox{\n"
-"	border: 1px solid rgb(195, 195, 195);\n"
-"	background-color: rgb(74, 74, 74);\n"
-"	border-radius: 5px;\n"
-"	padding:5px;\n"
-"}\n"
-"QComboBox QAbstractItemView {\n"
-"	background-color: rgb(47, 47, 47); \n"
-"   border: none;\n"
-"   border: 1px solid rgb(189, 189, 189);\n"
-"	border-radius: 5px;\n"
-"	padding:5px;\n"
-"}\n"
-"\n"
-"QComboBox::drop-down{\n"
-"	background-color: rgb(47, 47, 47); \n"
-"	border-radius: 5px;\n"
-"	padding:5px;\n"
-"}\n"
-"\n"
-"#button_addClass{\n"
-"	border: 1px solid rgb(14, 172, 51);\n"
-"	border-radius: 5px;\n"
-"	padding:8px;\n"
-"}\n"
-"#button_removeClass{\n"
-"	border: 1px solid rgb(213, 50, 22);\n"
-"	border-radius: 5px;\n"
-"	padding:9px;\n"
-"}\n"
-"\n"
-"#button_save{\n"
-"	border: 1px solid rgb(14, 172, 51);\n"
-"	border-radius: 5px;\n"
-"	padding:8px;\n"
-"}\n"
-"#button_c"
-                        "ancel{\n"
-"	border: 1px solid rgb(213, 50, 22);\n"
-"	border-radius: 5px;\n"
-"	padding:8px;\n"
-"}\n"
-"")
+                                        "background-color: rgb(74, 74, 74);\n"
+                                        "color: #fff\n"
+                                        "}\n"
+                                        "QPushButton:hover { \n"
+                                        "background-color: rgb(47, 47, 47); \n"
+                                        "}\n"
+                                        "\n"
+                                        "QComboBox:hover { \n"
+                                        "background-color: rgb(47, 47, 47); \n"
+                                        "}\n"
+                                        "QComboBox{\n"
+                                        "	border: 1px solid rgb(195, 195, 195);\n"
+                                        "	background-color: rgb(74, 74, 74);\n"
+                                        "	border-radius: 5px;\n"
+                                        "	padding:5px;\n"
+                                        "}\n"
+                                        "QComboBox QAbstractItemView {\n"
+                                        "	background-color: rgb(47, 47, 47); \n"
+                                        "   border: none;\n"
+                                        "   border: 1px solid rgb(189, 189, 189);\n"
+                                        "	border-radius: 5px;\n"
+                                        "	padding:5px;\n"
+                                        "}\n"
+                                        "\n"
+                                        "QComboBox::drop-down{\n"
+                                        "	background-color: rgb(47, 47, 47); \n"
+                                        "	border-radius: 5px;\n"
+                                        "	padding:5px;\n"
+                                        "}\n"
+                                        "\n"
+                                        "#button_addClass{\n"
+                                        "	border: 1px solid rgb(14, 172, 51);\n"
+                                        "	border-radius: 5px;\n"
+                                        "	padding:8px;\n"
+                                        "}\n"
+                                        "#button_removeClass{\n"
+                                        "	border: 1px solid rgb(213, 50, 22);\n"
+                                        "	border-radius: 5px;\n"
+                                        "	padding:9px;\n"
+                                        "}\n"
+                                        "\n"
+                                        "#button_save{\n"
+                                        "	border: 1px solid rgb(14, 172, 51);\n"
+                                        "	border-radius: 5px;\n"
+                                        "	padding:8px;\n"
+                                        "}\n"
+                                        "#button_c"
+                                        "ancel{\n"
+                                        "	border: 1px solid rgb(213, 50, 22);\n"
+                                        "	border-radius: 5px;\n"
+                                        "	padding:8px;\n"
+                                        "}\n"
+                                        "")
         self.verticalLayout = QVBoxLayout(Dialog_addToClass)
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.widget_2 = QWidget(Dialog_addToClass)
@@ -117,7 +118,6 @@ class Ui_Dialog_addToClass(object):
 
         self.horizontalLayout_4.addWidget(self.button_removeClass, 0, Qt.AlignLeft)
 
-
         self.horizontalLayout_5.addWidget(self.frame_3)
 
         self.frame_2 = QFrame(self.widget_2)
@@ -134,9 +134,7 @@ class Ui_Dialog_addToClass(object):
 
         self.horizontalLayout_3.addWidget(self.class_items)
 
-
         self.horizontalLayout_5.addWidget(self.frame_2)
-
 
         self.verticalLayout.addWidget(self.widget_2)
 
@@ -163,19 +161,16 @@ class Ui_Dialog_addToClass(object):
 
         self.horizontalLayout.addWidget(self.button_cancel)
 
-
         self.verticalLayout_2.addWidget(self.frame, 0, Qt.AlignHCenter)
 
-
         self.verticalLayout.addWidget(self.widget)
-
 
         self.retranslateUi(Dialog_addToClass)
 
         self.button_removeClass.setDefault(False)
 
-
         QMetaObject.connectSlotsByName(Dialog_addToClass)
+
     # setupUi
 
     def retranslateUi(self, Dialog_addToClass):
@@ -185,4 +180,3 @@ class Ui_Dialog_addToClass(object):
         self.button_save.setText(QCoreApplication.translate("Dialog_addToClass", u"save", None))
         self.button_cancel.setText(QCoreApplication.translate("Dialog_addToClass", u"cancel", None))
     # retranslateUi
-

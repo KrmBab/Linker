@@ -1,74 +1,84 @@
 import os
-from typing import Dict
+from dataclasses import dataclass
+from typing import Dict, Union
 
-from PySide6.QtCore import QUrl, QFileInfo
-from PySide6.QtGui import QDesktopServices, QPixmap
-from PySide6.QtWidgets import QFileDialog, QFileIconProvider, QApplication, QListView, QLabel, QComboBox
+from PySide6.QtCore import QUrl, QFileInfo, QStringListModel
+from PySide6.QtGui import QDesktopServices, QPixmap, QIcon
+from PySide6.QtWidgets import QFileDialog, QFileIconProvider, QApplication, QComboBox, QListView, QLabel
 
-from .CutomWidget import MessageBox, Rename, AddToClass
+from .CutomWidget import MessageBox, Rename_Dialog, Category_Dialog, StatusBar
 from .DataBase import DataBase
 
 
-class DBManager():
-    def __init__(self):
+@dataclass
+class Data_center:
+    iconLinker: QIcon
+    models_dict: Dict[str, Union[Dict[str, QStringListModel], Dict[str, QComboBox]]]
+    listsViews_dict: [Dict[str, QListView], Dict[str, QLabel], Dict[str, QLabel]]
+    dataBase: DataBase
+    statusbar: StatusBar
 
-        self.models_list = None
-        self.listsViews:[Dict[str:QListView, str:QLabel, str:QLabel]] = []
-        self.comboBoxs:[Dict[str:QComboBox, str:QComboBox, str:QComboBox]] = []
 
-        self.statusbar = None
+class Manager():
+    __category_tabe = None
 
-        self.dialog_rename = Rename()
-        self.dialog_addToClass = AddToClass()
-        self.class_tabe = None
-        self.dialog_addToClass.button_addClass.clicked.connect(self.add_class)
-        self.dialog_addToClass.button_removeClass.clicked.connect(self.remove_class)
+    def __init__(self, dataCenter: Data_center):
+        self.dataCenter = dataCenter
+
+        self.dialog_rename = Rename_Dialog()
+        self.dialog_rename.setWindowIcon(self.dataCenter.iconLinker)
+        self.category_dialog = Category_Dialog(self.add_class, self.remove_class)
 
         self.messageBox = MessageBox()
         self.clipboard = QApplication.clipboard()
-        self.DB = DataBase("data/LinkerDB.db")
 
+    # region class_manip
     def remove_class(self):
 
-        msg = self.DB.remove_class(self.class_tabe.objectName(), self.dialog_addToClass.get_class())
+        msg = self.dataCenter.dataBase.remove_class(self.__category_tabe.objectName(), self.category_dialog.get_class())
         if msg is not None:
             self.messageBox.set_error(msg)
             self.messageBox.exec()
         else:
-            self.dialog_addToClass.rest_items()
-            class_items = self.DB.get_class(self.class_tabe.objectName())
-            self.dialog_addToClass.update_items(class_items)
+            self.category_dialog.rest_items()
+            class_items = self.dataCenter.dataBase.get_class(self.__category_tabe.objectName())
+            self.category_dialog.update_items(class_items)
             # self.update_class_fromDB()
+
     def add_class(self):
 
         self.dialog_rename.lineEdit.setText("")
         save = self.dialog_rename.exec()
         if save:
             class_name = self.dialog_rename.lineEdit.text()
-            msg = self.DB.add_class( self.class_tabe.objectName(),class_name)
+            msg = self.dataCenter.dataBase.add_class(self.__category_tabe.objectName(), class_name)
             if msg is not None:
                 self.messageBox.set_error(msg)
                 self.messageBox.exec()
             else:
-                self.dialog_addToClass.rest_items()
-                class_items = self.DB.get_class(self.class_tabe.objectName())
-                self.dialog_addToClass.update_items(class_items)
+                self.category_dialog.rest_items()
+                class_items = self.dataCenter.dataBase.get_class(self.__category_tabe.objectName())
+                self.category_dialog.update_items(class_items)
                 # self.update_class_fromDB()
+
     def update_class_fromDB(self):
-        for cls in self.models_list.values():
+        for cls in self.dataCenter.models_dict.values():
             cls["class"].clear()
             cls["class"].addItem("All")
-            cls["class"].addItems(self.DB.get_class(cls["class"].objectName()))
+            cls["class"].addItems(self.dataCenter.dataBase.get_class(cls["class"].objectName()))
         pass
 
+    # endregion
+
+    # region other_actions
     def Get_selectedItems(self):
-        for LV in self.listsViews:
+        for LV in self.dataCenter.listsViews_dict:
             items = LV["list"].selectedIndexes()
             if items:
                 return items, LV["list"].model(), LV["icon"], LV["path"]
         return None, None, None, None
 
-    def get_exe_icon(self,exe_path):
+    def get_exe_icon(self, exe_path):
         icon_provider = QFileIconProvider()
         file_info = QFileInfo(exe_path)
         icon = icon_provider.icon(file_info)
@@ -76,49 +86,60 @@ class DBManager():
         return icon
 
     def update_status(self):
-        filesCount = self.models_list["files"]["model"].rowCount()
-        foldersCount = self.models_list["folders"]["model"].rowCount()
-        appsCount = self.models_list["apps"]["model"].rowCount()
+        filesCount = self.dataCenter.models_dict["files"]["model"].rowCount()
+        foldersCount = self.dataCenter.models_dict["folders"]["model"].rowCount()
+        appsCount = self.dataCenter.models_dict["apps"]["model"].rowCount()
 
-        self.statusbar.set_status(f"Apps : {appsCount} | Files : {filesCount} | Folders : "
-                                      f"{foldersCount}")
+        self.dataCenter.statusbar.set_status(f"Apps : {appsCount} | Files : {filesCount} | Folders : "
+                                             f"{foldersCount}")
 
     def show_path(self):
         items, model, label_icon, label_name = self.Get_selectedItems()
         if items:
-            path = self.DB.get_item_path(model.objectName(), items[0].data())
-            self.statusbar.set_message(f"{path}")
+            path = self.dataCenter.dataBase.get_item_path(model.objectName(), items[0].data())
+            self.dataCenter.statusbar.set_message(f"{path}")
 
             label_icon.setPixmap(self.get_exe_icon(path))
             label_name.setText(os.path.basename(path))
 
-    def update_from_db(self, msg:str=None):
+    # endregion
+
+    # region update_fromDB
+    def update_from_db(self, msg: str = None):
 
         if msg is not None:
             self.messageBox.set_error(msg)
             self.messageBox.exec()
-        for model in self.models_list.values():
-            model["model"].setStringList(self.DB.get_all_names(model["model"].objectName(), model["class"].currentText()))
+        for model in self.dataCenter.models_dict.values():
+            model["model"].setStringList(
+                self.dataCenter.dataBase.get_all_names(model["model"].objectName(), model["class"].currentText()))
 
     def update_apps_fromDB(self):
-        model = self.models_list["apps"]
-        model["model"].setStringList(self.DB.get_all_names(model["model"].objectName(), model["class"].currentText()))
+        model = self.dataCenter.models_dict["apps"]
+        model["model"].setStringList(
+            self.dataCenter.dataBase.get_all_names(model["model"].objectName(), model["class"].currentText()))
         self.update_status()
 
     def update_folders_fromDB(self):
-        model = self.models_list["folders"]
-        model["model"].setStringList(self.DB.get_all_names(model["model"].objectName(), model["class"].currentText()))
+        model = self.dataCenter.models_dict["folders"]
+        model["model"].setStringList(
+            self.dataCenter.dataBase.get_all_names(model["model"].objectName(), model["class"].currentText()))
 
     def update_files_fromDB(self):
-        model = self.models_list["files"]
-        model["model"].setStringList(self.DB.get_all_names(model["model"].objectName(), model["class"].currentText()))
+        model = self.dataCenter.models_dict["files"]
+        model["model"].setStringList(
+            self.dataCenter.dataBase.get_all_names(model["model"].objectName(), model["class"].currentText()))
 
+    # endregion
+
+    # region add_items
     def add_folder(self):
         # Create a folder selection dialog
         selected_folder = QFileDialog.getExistingDirectory()
         if selected_folder != "":
             folder_name = os.path.basename(selected_folder)
-            msg = self.DB.add_item(self.models_list["folders"]["model"].objectName(), folder_name, selected_folder)
+            msg = self.dataCenter.dataBase.add_item(self.dataCenter.models_dict["folders"]["model"].objectName(),
+                                                    folder_name, selected_folder)
             self.update_from_db(msg)
 
     def add_file(self):
@@ -128,13 +149,15 @@ class DBManager():
             file_name = os.path.basename(selected_file[0])
 
             if ".exe" not in file_name:
-                msg = self.DB.add_item(self.models_list["files"]["model"].objectName(), file_name, selected_file[0])
+                msg = self.dataCenter.dataBase.add_item(self.dataCenter.models_dict["files"]["model"].objectName(),
+                                                        file_name, selected_file[0])
 
             else:
                 # Show the warning message box and wait for user interaction
                 self.messageBox.set_warning("This is an .exe file it will be add to Apps list")
                 self.messageBox.exec()
-                msg = self.DB.add_item(self.models_list["apps"]["model"].objectName(), file_name, selected_file[0])
+                msg = self.dataCenter.dataBase.add_item(self.dataCenter.models_dict["apps"]["model"].objectName(),
+                                                        file_name, selected_file[0])
 
             self.update_from_db(msg)
 
@@ -143,9 +166,13 @@ class DBManager():
         selected_app = QFileDialog.getOpenFileName(filter="*.exe")
         if selected_app[0] != "":
             app_name = os.path.basename(selected_app[0])
-            msg = self.DB.add_item(self.models_list["apps"]["model"].objectName(), app_name, selected_app[0])
+            msg = self.dataCenter.dataBase.add_item(self.dataCenter.models_dict["apps"]["model"].objectName(), app_name,
+                                                    selected_app[0])
             self.update_from_db(msg)
 
+    # endregion
+
+    # region item_manip
     def rename_item(self):
         items, model, _, _ = self.Get_selectedItems()
         old_name = items[0].data()
@@ -154,26 +181,26 @@ class DBManager():
         if save:
             new_name = self.dialog_rename.lineEdit.text()
             if new_name != old_name:
-                msg = self.DB.change_item_name(model.objectName(), old_name, new_name)
+                msg = self.dataCenter.dataBase.change_item_name(model.objectName(), old_name, new_name)
                 self.update_from_db(msg)
 
     def delete_item(self):
         items, model, icon, name = self.Get_selectedItems()
         icon.setPixmap(QPixmap())
         name.setText("")
-        self.statusbar.set_message("")
+        self.dataCenter.statusbar.set_message("")
         if items:
             msg = None
             for itm in items:
-                msg = self.DB.delete_item(model.objectName(), itm.data())
+                msg = self.dataCenter.dataBase.delete_item(model.objectName(), itm.data())
             self.update_from_db(msg)
             self.update_status()
 
     def open_item(self):
-        items, model , _, _= self.Get_selectedItems()
+        items, model, _, _ = self.Get_selectedItems()
 
         for itm in items:
-            itm_path = self.DB.get_item_path(model.objectName(),itm.data())
+            itm_path = self.dataCenter.dataBase.get_item_path(model.objectName(), itm.data())
             itm_url = QUrl.fromLocalFile(itm_path)
             if not QDesktopServices.openUrl(itm_url):
                 self.messageBox.set_error(f"Error: Failed to open {itm.data()} on '{itm_path}'")
@@ -182,7 +209,7 @@ class DBManager():
     def open_item_dir(self):
         items, model, _, _ = self.Get_selectedItems()
         for itm in items:
-            itm_path = self.DB.get_item_path(model.objectName(),itm.data())
+            itm_path = self.dataCenter.dataBase.get_item_path(model.objectName(), itm.data())
             itm_dir = os.path.dirname(itm_path)
             itm_url = QUrl.fromLocalFile(itm_dir)
             if not QDesktopServices.openUrl(itm_url):
@@ -193,7 +220,7 @@ class DBManager():
         items, model, _, _ = self.Get_selectedItems()
 
         for itm in items:
-            itm_path = self.DB.get_item_path(model.objectName(),itm.data())
+            itm_path = self.dataCenter.dataBase.get_item_path(model.objectName(), itm.data())
             if os.path.exists(itm_path):
                 self.clipboard.setText(itm_path)
             else:
@@ -203,18 +230,22 @@ class DBManager():
     def add_toClass(self):
         items, model, _, _ = self.Get_selectedItems()
 
-        for mdl in self.models_list.values():
+        for mdl in self.dataCenter.models_dict.values():
             if mdl["model"] == model:
-                self.class_tabe = mdl["class"]
+                self.__category_tabe = mdl["class"]
                 break
 
-        class_items = self.DB.get_class(self.class_tabe.objectName())
-        self.dialog_addToClass.update_items(class_items)
-        add = self.dialog_addToClass.exec()
-        className = self.dialog_addToClass.get_class()
-        self.dialog_addToClass.rest_items()
+        class_items = self.dataCenter.dataBase.get_class(self.__category_tabe.objectName())
+        self.category_dialog.update_items(class_items)
+        add = self.category_dialog.exec()
+        className = self.category_dialog.get_class()
+        self.category_dialog.rest_items()
 
         if add:
-            self.DB.set_class(model.objectName(), items[0].data(), className)
+            self.dataCenter.dataBase.set_class(model.objectName(), items[0].data(), className)
 
         self.update_class_fromDB()
+
+    # endregion
+    def __end(self):
+        pass
