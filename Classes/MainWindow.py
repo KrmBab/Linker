@@ -62,7 +62,6 @@ class Widget(Manager, QMainWindow):
             {"list": self.ui.listView_files, "icon": self.ui.label_iconFiles, "path": self.ui.label_pathFiles}
         ]
 
-
         dataBase = DataBase(self.db_path)
         statusbar = StatusBar(self.ui.statusbar)
         # Data_center()
@@ -92,7 +91,7 @@ class Widget(Manager, QMainWindow):
         self.ui.listView_files.clicked.connect(self.show_path)
 
         ########
-        self.update_class_fromDB()
+        self.update_category_fromDB()
         ########
 
         # connect to functions
