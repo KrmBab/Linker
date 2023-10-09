@@ -34,7 +34,7 @@ class Widget(Manager, QMainWindow):
 
         self.ui = Ui_MainWindow()
         icon = QIcon()
-        icon.addFile("_internal/Static/link.png", QSize(), QIcon.Normal, QIcon.Off)
+        icon.addFile("Static/link.png", QSize(), QIcon.Normal, QIcon.Off)
 
         self.ui.setupUi(self)
         self.setWindowIcon(icon)
