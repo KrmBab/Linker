@@ -25,6 +25,11 @@ def check_single_instance():
 
 
 class Widget(Manager, QMainWindow):
+    ###
+    db_path = os.path.join(os.getenv('APPDATA'), 'Linker/LinkerDB.db')
+    icon_path = "Static/link.png"
+    ###
+
     __foldersCount = 0
     __filesCount = 0
     __appsCount = 0
@@ -34,7 +39,7 @@ class Widget(Manager, QMainWindow):
 
         self.ui = Ui_MainWindow()
         icon = QIcon()
-        icon.addFile("Static/link.png", QSize(), QIcon.Normal, QIcon.Off)
+        icon.addFile(self.icon_path, QSize(), QIcon.Normal, QIcon.Off)
 
         self.ui.setupUi(self)
         self.setWindowIcon(icon)
@@ -57,11 +62,12 @@ class Widget(Manager, QMainWindow):
             {"list": self.ui.listView_files, "icon": self.ui.label_iconFiles, "path": self.ui.label_pathFiles}
         ]
 
-        dataBase = DataBase("data/LinkerDB.db")
+
+        dataBase = DataBase(self.db_path)
         statusbar = StatusBar(self.ui.statusbar)
         # Data_center()
         self.dataCenter = Data_center(models_dict=models_list, listsViews_dict=listsViews,
-                                 dataBase=dataBase, iconLinker=icon, statusbar=statusbar)
+                                      dataBase=dataBase, iconLinker=icon, statusbar=statusbar)
         super().__init__(self.dataCenter)
 
         self.ui.button_add_folder.clicked.connect(self.add_folder)
