@@ -8,7 +8,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="fa1b8ebc-afac-4698-95a0-f143cfaf117e" name="Default Changelist" comment="use @dataclass" />
+    <list default="true" id="fa1b8ebc-afac-4698-95a0-f143cfaf117e" name="Default Changelist" comment="icon change" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -229,7 +229,15 @@
       <option name="project" value="LOCAL" />
       <updated>1696800603192</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="icon change">
+      <option name="closed" value="true" />
+      <created>1696800805352</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1696800805352</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -275,6 +283,7 @@
     <MESSAGE value="update the app and add category" />
     <MESSAGE value="update the linker" />
     <MESSAGE value="use @dataclass" />
-    <option name="LAST_COMMIT_MESSAGE" value="use @dataclass" />
+    <MESSAGE value="icon change" />
+    <option name="LAST_COMMIT_MESSAGE" value="icon change" />
   </component>
 </project>

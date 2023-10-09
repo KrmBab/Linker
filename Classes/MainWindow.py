@@ -60,9 +60,9 @@ class Widget(Manager, QMainWindow):
         dataBase = DataBase("data/LinkerDB.db")
         statusbar = StatusBar(self.ui.statusbar)
         # Data_center()
-        dataCenter = Data_center(models_dict=models_list, listsViews_dict=listsViews,
+        self.dataCenter = Data_center(models_dict=models_list, listsViews_dict=listsViews,
                                  dataBase=dataBase, iconLinker=icon, statusbar=statusbar)
-        super().__init__(dataCenter)
+        super().__init__(self.dataCenter)
 
         self.ui.button_add_folder.clicked.connect(self.add_folder)
         self.ui.button_add_file.clicked.connect(self.add_file)
@@ -125,7 +125,7 @@ class Widget(Manager, QMainWindow):
             else:
                 model = self.model_apps
 
-            msg = self.DB.add_item(model.objectName(), file_name, file_path)
+            msg = self.dataCenter.dataBase.add_item(model.objectName(), file_name, file_path)
             self.update_from_db(msg)
             if msg is None:
                 self.messageBox.set_info(f"item added to {model.objectName()} list")
