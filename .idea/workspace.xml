@@ -10,13 +10,8 @@
   <component name="ChangeListManager">
     <list default="true" id="fa1b8ebc-afac-4698-95a0-f143cfaf117e" name="Default Changelist" comment="linker new version">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Classes/CutomWidget.py" beforeDir="false" afterPath="$PROJECT_DIR$/Classes/CutomWidget.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Classes/MainWindow.py" beforeDir="false" afterPath="$PROJECT_DIR$/Classes/MainWindow.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Classes/Manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/Classes/Manager.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Classes/MangerClasses/Item_manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/Classes/MangerClasses/Item_manager.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Classes/MangerClasses/Widget_interface.py" beforeDir="false" afterPath="$PROJECT_DIR$/Classes/MangerClasses/Widget_interface.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GUI/Dialog_CategoryMenu.ui" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/Dialog_CategoryMenu.ui" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Widgets/Dialog_CategoryMenu.py" beforeDir="false" afterPath="$PROJECT_DIR$/Widgets/Dialog_CategoryMenu.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GUI/Linker.ui" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/Linker.ui" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Widgets/Linker.py" beforeDir="false" afterPath="$PROJECT_DIR$/Widgets/Linker.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -75,11 +70,12 @@
   </component>
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;C:/Users/KrM/Documents/PycharmProjects/Linker/GUI&quot;,
     &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;
+    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;
   }
 }</component>
   <component name="RecentsManager">
@@ -299,7 +295,15 @@
       <option name="project" value="LOCAL" />
       <updated>1697223814399</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="linker new version">
+      <option name="closed" value="true" />
+      <created>1697228679284</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1697228679284</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
