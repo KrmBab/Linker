@@ -61,7 +61,7 @@ class Ui_Dialog_CategoryMenu(object):
         self.listView_category = QListView(self.widget)
         self.listView_category.setObjectName(u"listView_category")
         font = QFont()
-        font.setPointSize(10)
+        font.setPointSize(12)
         self.listView_category.setFont(font)
 
         self.horizontalLayout_2.addWidget(self.listView_category)

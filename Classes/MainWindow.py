@@ -2,6 +2,7 @@ import ctypes
 import os
 import sys
 
+import win32com.client
 from PySide6.QtCore import QStringListModel, Qt, QSize
 from PySide6.QtGui import QDropEvent, QDragEnterEvent, QIcon
 from PySide6.QtWidgets import QMainWindow, QSystemTrayIcon
@@ -151,8 +152,11 @@ class Widget(Manager, QMainWindow):
     def dropEvent(self, event: QDropEvent):
         mime_data = event.mimeData()
         if mime_data.hasUrls():
-            model = None
+
             file_path = mime_data.urls()[0].toLocalFile()
+            if ".lnk" in file_path:
+                shell = win32com.client.Dispatch("WScript.Shell")
+                file_path = shell.CreateShortCut(file_path).Targetpath
             file_name = os.path.basename(file_path)
             if os.path.isdir(file_path):
                 model = self.model_folders
@@ -165,7 +169,6 @@ class Widget(Manager, QMainWindow):
             self.update_from_db(msg)
             if msg is None:
                 self.messageBox.set_info(f"item added to {model.objectName()} list")
-                self.messageBox.exec()
 
     def keyPressEvent(self, event):
         # This function is called when a key is pressed

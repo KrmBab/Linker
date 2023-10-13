@@ -1,5 +1,6 @@
 import os
 
+import win32com.client
 from PySide6.QtCore import QUrl
 from PySide6.QtGui import QDesktopServices, QPixmap
 from PySide6.QtWidgets import QComboBox, QApplication, QFileDialog
@@ -24,13 +25,10 @@ class ItemManager:
     def rename_item(self):
         items, model, _, _ = self.manger_methods.get_selectedItems()
         old_name = items[0].data()
-        self.dialog_rename.lineEdit.setText(old_name)
-        save = self.dialog_rename.exec()
-        if save:
-            new_name = self.dialog_rename.lineEdit.text()
-            if new_name != old_name:
-                msg = self.dataCenter.dataBase.change_item_name(model.objectName(), old_name, new_name)
-                self.update_from_db(msg)
+        new_name = self.dialog_rename.show_window(old_name)
+        if new_name is not None:
+            msg = self.dataCenter.dataBase.change_item_name(model.objectName(), old_name, new_name)
+            self.update_from_db(msg)
 
     def delete_item(self):
         items, model, icon, name = self.manger_methods.get_selectedItems()
@@ -52,7 +50,7 @@ class ItemManager:
             itm_url = QUrl.fromLocalFile(itm_path)
             if not QDesktopServices.openUrl(itm_url):
                 self.messageBox.set_error(f"Error: Failed to open {itm.data()} on '{itm_path}'")
-                self.messageBox.exec()
+                
 
     def open_item_dir(self):
         items, model, _, _ = self.manger_methods.get_selectedItems()
@@ -62,7 +60,7 @@ class ItemManager:
             itm_url = QUrl.fromLocalFile(itm_dir)
             if not QDesktopServices.openUrl(itm_url):
                 self.messageBox.set_error(f"Error: Failed to open {itm.data()} on '{itm_path}'")
-                self.messageBox.exec()
+                
 
     def copy_item_path(self):
         items, model, _, _ = self.manger_methods.get_selectedItems()
@@ -73,7 +71,7 @@ class ItemManager:
                 self.clipboard.setText(itm_path)
             else:
                 self.messageBox.set_error(f"Error: Failed to open {itm.data()} on '{itm_path}'")
-                self.messageBox.exec()
+                
 
     # endregion
 
@@ -89,20 +87,23 @@ class ItemManager:
 
     def add_file(self):
         # Create a folder selection dialog
-        selected_file = QFileDialog.getOpenFileName()
-        if selected_file[0] != "":
-            file_name = os.path.basename(selected_file[0])
+        file_path = QFileDialog.getOpenFileName()[0]
+        if file_path != "":
+            if ".lnk" in file_path:
+                shell = win32com.client.Dispatch("WScript.Shell")
+                file_path = shell.CreateShortCut(file_path).Targetpath
+            file_name = os.path.basename(file_path)
 
             if ".exe" not in file_name:
                 msg = self.dataCenter.dataBase.add_item(self.dataCenter.models_dict["files"]["model"].objectName(),
-                                                        file_name, selected_file[0])
+                                                        file_name, file_path)
 
             else:
                 # Show the warning message box and wait for user interaction
                 self.messageBox.set_warning("This is an .exe file it will be add to Apps list")
-                self.messageBox.exec()
+                
                 msg = self.dataCenter.dataBase.add_item(self.dataCenter.models_dict["apps"]["model"].objectName(),
-                                                        file_name, selected_file[0])
+                                                        file_name, file_path)
 
             self.update_from_db(msg)
 
@@ -123,7 +124,7 @@ class ItemManager:
 
         if msg is not None:
             self.messageBox.set_error(msg)
-            self.messageBox.exec()
+            
         for model in self.dataCenter.models_dict.values():
             model["model"].setStringList(
                 self.dataCenter.dataBase.get_all_names(model["model"].objectName(), model["class"].currentText()))

@@ -64,7 +64,7 @@ border-bottom: 1px solid rgb(189, 189, 189);
        <widget class="QListView" name="listView_category">
         <property name="font">
          <font>
-          <pointsize>10</pointsize>
+          <pointsize>12</pointsize>
          </font>
         </property>
        </widget>

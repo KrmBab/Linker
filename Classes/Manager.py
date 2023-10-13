@@ -17,7 +17,6 @@ class Manager(ItemManager):
                                              update_status=self.update_status)
 
         self.dialog_rename = Rename_Dialog(self)
-        self.dialog_rename.setWindowIcon(self.dataCenter.iconLinker)
 
         self.category_dialog = Category_Dialog(dataCenter, self)
         self.category_menu = Category_Menu(dataCenter, self)

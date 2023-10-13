@@ -12,11 +12,8 @@ class Category_Dialog(QDialog, Ui_Dialog_addToClass):
     class_table:None
     def __init__(self, dataCenter:DataCenter, parent=None):
         super().__init__(parent)
-        self.setModal(True)
         self.setupUi(self)
         self.dataCenter = dataCenter
-        self.setModal(True)
-        self.setWindowModality(Qt.ApplicationModal)
         # Connect your button signals to functions here
         self.button_save.clicked.connect(self.accept)
         self.button_cancel.clicked.connect(self.reject)
@@ -52,9 +49,6 @@ class Category_Menu(QDialog, Ui_Dialog_CategoryMenu):
         super().__init__(parent)
         self.setupUi(self)
         self.dataCenter = dataCenter
-
-        self.setWindowIcon(dataCenter.iconLinker)
-
         self.model_category = QStringListModel()
         self.listView_category.setModel(self.model_category)
 

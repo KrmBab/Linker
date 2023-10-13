@@ -11,12 +11,8 @@ from Widgets.Dialog_rename import Ui_Dialog_rename
 class MessageBox(QMessageBox):
     def __init__(self, parent=None):
         super().__init__(parent)
-
-        icon = QIcon(u"_internal/Static/link.png")
-        self.setWindowIcon(icon)
         self.setStyleSheet("""
         *{ 
-            button-layout: Center;
             color:#fff;
             background-color:rgb(79,79,79)
         }
@@ -24,28 +20,29 @@ class MessageBox(QMessageBox):
             background-color: rgb(47, 47, 47); 
         }
         QPushButton{
-            margin-left: auto; 
-            margin-right: auto;
             border: 1px solid rgb(143, 143, 143);
             border-radius: 5px;
             padding:8px;
         }
         """)
-
+        self.setButtonText(1, "     OK    ")
     def set_warning(self, message):
         self.setText(message)
         self.setIcon(QMessageBox.Icon.Warning)
         self.setWindowTitle("Warning")
+        self.exec()
 
     def set_error(self, message):
         self.setText(message)
         self.setIcon(QMessageBox.Icon.Critical)
         self.setWindowTitle("Error")
+        self.exec()
 
     def set_info(self, message):
         self.setText(message)
         self.setIcon(QMessageBox.Icon.Information)
         self.setWindowTitle("Information")
+        self.exec()
 
 
 class Rename_Dialog(QDialog, Ui_Dialog_rename):
@@ -55,6 +52,15 @@ class Rename_Dialog(QDialog, Ui_Dialog_rename):
         # Connect your button signals to functions here
         self.button_save.clicked.connect(self.accept)
         self.button_cancel.clicked.connect(self.reject)
+
+    def show_window(self, text:str = ""):
+        self.lineEdit.setText(text)
+        save = self.exec()
+        newtext = self.lineEdit.text()
+        if save and newtext != text:
+            return self.lineEdit.text()
+        else:
+            return None
 
 
 class StatusBar():
