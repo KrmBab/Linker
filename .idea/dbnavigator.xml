@@ -26,6 +26,9 @@
     <filter-actions connection-id="a8295cd8-fd7c-499d-ba80-610f379dd182" dataset="main.class_apps" active-filter-id="" />
     <filter-actions connection-id="a8295cd8-fd7c-499d-ba80-610f379dd182" dataset="main.apps" active-filter-id="EMPTY_FILTER" />
   </component>
+  <component name="DBNavigator.Project.ExecutionManager">
+    <retain-sticky-names value="false" />
+  </component>
   <component name="DBNavigator.Project.ObjectQuickFilterManager">
     <last-used-operator value="EQUAL" />
     <filters />

@@ -1,10 +1,9 @@
 from typing import Dict, Any
 
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, QObject
 from PySide6.QtGui import QIcon
-from PySide6.QtWidgets import QMenu, QStatusBar, QLabel, QListView, QMessageBox, QDialog, QComboBox
+from PySide6.QtWidgets import QMenu, QStatusBar, QLabel, QListView, QMessageBox, QDialog
 
-from Widgets.Dialog_addToClass import Ui_Dialog_addToClass
 # from Classes.Manager import DBManager
 from Widgets.Dialog_rename import Ui_Dialog_rename
 
@@ -58,31 +57,6 @@ class Rename_Dialog(QDialog, Ui_Dialog_rename):
         self.button_cancel.clicked.connect(self.reject)
 
 
-class Category_Dialog(QDialog, Ui_Dialog_addToClass):
-    def __init__(self, add_class_method, remove_class_method, parent=None):
-        super().__init__(parent)
-        self.setupUi(self)
-        # Connect your button signals to functions here
-        self.connect_buttons(add_class_method, remove_class_method)
-
-    def connect_buttons(self, add_class_method, remove_class_method):
-        self.button_save.clicked.connect(self.accept)
-        self.button_cancel.clicked.connect(self.reject)
-        self.button_addClass.clicked.connect(add_class_method)
-        self.button_removeClass.clicked.connect(remove_class_method)
-
-    def update_items(self, itmes: [str]):
-        self.class_items.addItems(itmes)
-
-    def get_class(self):
-        return self.class_items.currentText()
-
-    def rest_items(self):
-        self.class_items.clear()
-    # def add_class(self, className:str):
-    #
-
-
 class StatusBar():
     def __init__(self, statusbar: QStatusBar):
         self.statusbar = statusbar
@@ -97,43 +71,29 @@ class StatusBar():
         self.statusbar.showMessage(message)
 
 
-class ComboBox:
-    def __init__(self, comboBoxs: Dict[str, QComboBox], database):
-        self.DataBase = database
-
-    def update_class(self):
-        pass
-
-    def add_class(self):
-        pass
-
-    def delete_class(self):
-        pass
-
-
 class ContextMenu(QMenu):
+    contextmenuObject:QObject
+
     def __init__(self, actions: Dict[str, Any]):
         super().__init__(None)
+
         self.setObjectName("context_menu")
-        self.actions = actions
-        for act in self.actions.keys():
-            action = self.addAction(f"{act}")
-            action.setObjectName(f"{act}")
+        # self.actions = actions
+        for name, action in actions.items():
+            self.addAction(f"{name}", action)
 
         # self.setStyleSheet("""
         # #context_menu::item:hover {
         # background-color: rgb(120, 120, 120);}
         # """)
 
-    def show_context_menu(self, position, sender: QListView):
+    def show_contextMenu_position(self, position, sender: QListView):
         # Get the index of the selected item
+        self.contextmenuObject = sender
         selected_index = sender.indexAt(position)
         if selected_index.isValid():
-            selected_action = self.exec(sender.mapToGlobal(position))
-            # Handle the selected action (if any)
-            if selected_action is not None:
-                try:
-                    act = selected_action.objectName()
-                    self.actions[act]()
-                except:
-                    pass
+            self.exec(sender.mapToGlobal(position))
+    def show_contextMenu(self, position, sender:Any):
+        self.contextmenuObject = sender
+        self.exec(sender.mapToGlobal(position))
+

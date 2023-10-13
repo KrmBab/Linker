@@ -4,12 +4,12 @@ import sys
 
 from PySide6.QtCore import QStringListModel, Qt, QSize
 from PySide6.QtGui import QDropEvent, QDragEnterEvent, QIcon
-from PySide6.QtWidgets import QMainWindow
+from PySide6.QtWidgets import QMainWindow, QSystemTrayIcon
 
 from Widgets.Linker import Ui_MainWindow
 from .CutomWidget import ContextMenu, StatusBar
 from .DataBase import DataBase
-from .Manager import Manager, Data_center
+from .Manager import Manager, DataCenter
 
 
 def check_single_instance():
@@ -53,6 +53,10 @@ class Widget(Manager, QMainWindow):
         self.model_files = QStringListModel()
         self.model_files.setObjectName("files")
 
+        self.combobox_list = {self.ui.listView_apps.objectName(): self.ui.class_apps,
+                        self.ui.listView_folders.objectName(): self.ui.class_folders,
+                        self.ui.listView_files.objectName(): self.ui.class_files
+        }
         models_list = {self.model_folders.objectName(): {"model": self.model_folders, "class": self.ui.class_folders},
                        self.model_apps.objectName(): {"model": self.model_apps, "class": self.ui.class_apps},
                        self.model_files.objectName(): {"model": self.model_files, "class": self.ui.class_files, }}
@@ -65,8 +69,8 @@ class Widget(Manager, QMainWindow):
         dataBase = DataBase(self.db_path)
         statusbar = StatusBar(self.ui.statusbar)
         # Data_center()
-        self.dataCenter = Data_center(models_dict=models_list, listsViews_dict=listsViews,
-                                      dataBase=dataBase, iconLinker=icon, statusbar=statusbar)
+        self.dataCenter = DataCenter(models_dict=models_list, listsViews_dict=listsViews,
+                                     dataBase=dataBase, iconLinker=icon, statusbar=statusbar)
         super().__init__(self.dataCenter)
 
         self.ui.button_add_folder.clicked.connect(self.add_folder)
@@ -78,17 +82,11 @@ class Widget(Manager, QMainWindow):
         self.ui.listView_files.setModel(self.model_files)
 
         # connect to functions
-        self.ui.listView_folders.doubleClicked.connect(self.open_item)
-        self.ui.listView_files.doubleClicked.connect(self.open_item)
-        self.ui.listView_apps.doubleClicked.connect(self.open_item)
-
-        self.ui.listView_folders.customContextMenuRequested.connect(self.show_context_menu)
-        self.ui.listView_files.customContextMenuRequested.connect(self.show_context_menu)
-        self.ui.listView_apps.customContextMenuRequested.connect(self.show_context_menu)
-
-        self.ui.listView_folders.clicked.connect(self.show_path)
-        self.ui.listView_apps.clicked.connect(self.show_path)
-        self.ui.listView_files.clicked.connect(self.show_path)
+        listViewList = [self.ui.listView_folders, self.ui.listView_files, self.ui.listView_apps]
+        for lst in listViewList:
+            lst.doubleClicked.connect(self.open_item)
+            lst.customContextMenuRequested.connect(lambda pos, obj=lst:self.show_contextMenu_items(pos, obj))
+            lst.clicked.connect(self.show_path)
 
         ########
         self.update_category_fromDB()
@@ -102,16 +100,49 @@ class Widget(Manager, QMainWindow):
         self.update_from_db()
         #########################
         # Create a context menu
-        context_menu_actions = {"+Add_to_category+": self.add_toClass,
+        context_menu_actions = {"+Add_to_category+": self.Add_to_category,
                                 "Open": self.open_item,
                                 "Open_path": self.open_item_dir,
                                 "Copy_path": self.copy_item_path,
                                 "Rename": self.rename_item,
                                 "Delete": self.delete_item}
 
-        self.context_menu = ContextMenu(context_menu_actions)
+        contextMenu_category_actions = {"Edite": self.sh}
 
+        self.context_menu = ContextMenu(context_menu_actions)
+        self.contextMenu_category = ContextMenu(contextMenu_category_actions)
+
+        categoryList = [self.ui.class_apps, self.ui.class_folders, self.ui.class_files]
+        for cat in categoryList:
+            cat.customContextMenuRequested.connect(lambda pos, obj=cat:self.contextMenu_category.show_contextMenu(pos, obj))
         self.update_status()
+
+        tray_menu = ContextMenu({"Exit":self.stop})
+        self.tray_icon = QSystemTrayIcon(self)
+        self.tray_icon.setIcon(icon)  # Icône de l'ordinateur
+        self.tray_icon.setContextMenu(tray_menu)
+        self.tray_icon.activated.connect(self.show_window)
+        self.tray_icon.show()
+
+    # region Tray
+    def stop(self):
+        sys.exit(0)
+
+    def show_window(self, reason):
+        if reason == QSystemTrayIcon.DoubleClick:
+            self.show()
+            self.activateWindow()
+
+    def closeEvent(self, event):
+        event.ignore()
+        self.hide()
+
+    #endregion
+
+    def Add_to_category(self):
+        self.category_dialog.show_window(self.context_menu.contextmenuObject)
+    def sh(self):
+        self.category_menu.show_category_menu(self.contextMenu_category.contextmenuObject)
 
     def dragEnterEvent(self, event: QDragEnterEvent):
         if event.mimeData().hasUrls():
@@ -144,11 +175,12 @@ class Widget(Manager, QMainWindow):
         if key == 16777220:
             self.open_item()
 
-    def show_context_menu(self, position):
-        listeviws = [self.ui.listView_folders, self.ui.listView_files, self.ui.listView_apps]
-        for lv in listeviws:
-            if lv != self.sender():
-                lv.clearSelection()
+    def show_contextMenu_items(self, position, obj):
+        # listeviws = [self.ui.listView_folders, self.ui.listView_files, self.ui.listView_apps]
+        # for lv in listeviws:
+        #     if lv != self.sender():
+        #         lv.clearSelection()
 
         self.show_path()
-        self.context_menu.show_context_menu(position, self.sender())
+        self.context_menu.show_contextMenu_position(position, obj)
+

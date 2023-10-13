@@ -1,29 +1,28 @@
 import os
-from typing import Any
 
 from PySide6.QtCore import QUrl
 from PySide6.QtGui import QDesktopServices, QPixmap
 from PySide6.QtWidgets import QComboBox, QApplication, QFileDialog
 
-from Classes.CutomWidget import MessageBox, Category_Dialog, Rename_Dialog
-from Classes.Data_center import Data_center
+from Classes.CutomWidget import MessageBox, Rename_Dialog
+from Classes.DataCenter import DataCenter, ManagerMethods
+from Classes.MangerClasses.Widget_interface import Category_Dialog
 
 
 class ItemManager:
     category_tabe: QComboBox
-    dataCenter: Data_center
+    dataCenter: DataCenter
     messageBox: MessageBox
     category_dialog: Category_Dialog
     dialog_rename: Rename_Dialog
     clipboard: QApplication.clipboard
+    
+    manger_methods:ManagerMethods
 
-    Get_selectedItems: Any
-    update_from_db: Any
-    update_status: Any
 
     # region item_manip
     def rename_item(self):
-        items, model, _, _ = self.Get_selectedItems()
+        items, model, _, _ = self.manger_methods.get_selectedItems()
         old_name = items[0].data()
         self.dialog_rename.lineEdit.setText(old_name)
         save = self.dialog_rename.exec()
@@ -34,7 +33,7 @@ class ItemManager:
                 self.update_from_db(msg)
 
     def delete_item(self):
-        items, model, icon, name = self.Get_selectedItems()
+        items, model, icon, name = self.manger_methods.get_selectedItems()
         icon.setPixmap(QPixmap())
         name.setText("")
         self.dataCenter.statusbar.set_message("")
@@ -43,10 +42,10 @@ class ItemManager:
             for itm in items:
                 msg = self.dataCenter.dataBase.delete_item(model.objectName(), itm.data())
             self.update_from_db(msg)
-            self.update_status()
+            self.manger_methods.update_status()
 
     def open_item(self):
-        items, model, _, _ = self.Get_selectedItems()
+        items, model, _, _ = self.manger_methods.get_selectedItems()
 
         for itm in items:
             itm_path = self.dataCenter.dataBase.get_item_path(model.objectName(), itm.data())
@@ -56,7 +55,7 @@ class ItemManager:
                 self.messageBox.exec()
 
     def open_item_dir(self):
-        items, model, _, _ = self.Get_selectedItems()
+        items, model, _, _ = self.manger_methods.get_selectedItems()
         for itm in items:
             itm_path = self.dataCenter.dataBase.get_item_path(model.objectName(), itm.data())
             itm_dir = os.path.dirname(itm_path)
@@ -66,7 +65,7 @@ class ItemManager:
                 self.messageBox.exec()
 
     def copy_item_path(self):
-        items, model, _, _ = self.Get_selectedItems()
+        items, model, _, _ = self.manger_methods.get_selectedItems()
 
         for itm in items:
             itm_path = self.dataCenter.dataBase.get_item_path(model.objectName(), itm.data())
@@ -133,16 +132,18 @@ class ItemManager:
         model = self.dataCenter.models_dict["apps"]
         model["model"].setStringList(
             self.dataCenter.dataBase.get_all_names(model["model"].objectName(), model["class"].currentText()))
-        self.update_status()
+        self.manger_methods.update_status()
 
     def update_folders_fromDB(self):
         model = self.dataCenter.models_dict["folders"]
         model["model"].setStringList(
             self.dataCenter.dataBase.get_all_names(model["model"].objectName(), model["class"].currentText()))
+        self.manger_methods.update_status()
 
     def update_files_fromDB(self):
         model = self.dataCenter.models_dict["files"]
         model["model"].setStringList(
             self.dataCenter.dataBase.get_all_names(model["model"].objectName(), model["class"].currentText()))
+        self.manger_methods.update_status()
 
     # endregion

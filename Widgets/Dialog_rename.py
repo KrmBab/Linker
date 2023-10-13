@@ -8,12 +8,16 @@
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
 
-from PySide6.QtCore import (QCoreApplication, QMetaObject, QSize, Qt)
-from PySide6.QtGui import (QFont)
-from PySide6.QtWidgets import (QFrame, QHBoxLayout,
-                               QLineEdit, QPushButton, QVBoxLayout,
-                               QWidget)
-
+from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
+    QMetaObject, QObject, QPoint, QRect,
+    QSize, QTime, QUrl, Qt)
+from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
+    QFont, QFontDatabase, QGradient, QIcon,
+    QImage, QKeySequence, QLinearGradient, QPainter,
+    QPalette, QPixmap, QRadialGradient, QTransform)
+from PySide6.QtWidgets import (QApplication, QDialog, QFrame, QHBoxLayout,
+    QLineEdit, QPushButton, QSizePolicy, QVBoxLayout,
+    QWidget)
 
 class Ui_Dialog_rename(object):
     def setupUi(self, Dialog_rename):
@@ -23,30 +27,30 @@ class Ui_Dialog_rename(object):
         Dialog_rename.setMinimumSize(QSize(219, 0))
         Dialog_rename.setMaximumSize(QSize(16777215, 100))
         Dialog_rename.setStyleSheet(u"*{\n"
-                                    "background-color: rgb(74, 74, 74);\n"
-                                    "color: #fff\n"
-                                    "}\n"
-                                    "QPushButton:hover { \n"
-                                    "background-color: rgb(47, 47, 47); \n"
-                                    "}\n"
-                                    "QLineEdit {\n"
-                                    "border: none;\n"
-                                    "   border: 1px solid rgb(189, 189, 189);\n"
-                                    "	border-radius: 5px;\n"
-                                    "	padding:8px;\n"
-                                    "}\n"
-                                    "\n"
-                                    "#button_save{\n"
-                                    "	border: 1px solid rgb(14, 172, 51);\n"
-                                    "	border-radius: 5px;\n"
-                                    "	padding:8px;\n"
-                                    "}\n"
-                                    "#button_cancel{\n"
-                                    "	border: 1px solid rgb(213, 50, 22);\n"
-                                    "	border-radius: 5px;\n"
-                                    "	padding:8px;\n"
-                                    "}\n"
-                                    "")
+"                background-color: rgb(74, 74, 74);\n"
+"                color: #fff\n"
+"                }\n"
+"                QPushButton:hover {\n"
+"                background-color: rgb(47, 47, 47);\n"
+"                }\n"
+"                QLineEdit {\n"
+"                border: none;\n"
+"                border: 1px solid rgb(189, 189, 189);\n"
+"                border-radius: 5px;\n"
+"                padding:8px;\n"
+"                }\n"
+"\n"
+"                #button_save{\n"
+"                border: 1px solid rgb(14, 172, 51);\n"
+"                border-radius: 5px;\n"
+"                padding:8px;\n"
+"                }\n"
+"                #button_cancel{\n"
+"                border: 1px solid rgb(213, 50, 22);\n"
+"                border-radius: 5px;\n"
+"                padding:8px;\n"
+"                }\n"
+"            ")
         self.verticalLayout = QVBoxLayout(Dialog_rename)
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.widget = QWidget(Dialog_rename)
@@ -79,6 +83,7 @@ class Ui_Dialog_rename(object):
 
         self.horizontalLayout.addWidget(self.button_cancel)
 
+
         self.verticalLayout_2.addWidget(self.frame, 0, Qt.AlignHCenter)
 
         self.lineEdit.raise_()
@@ -86,10 +91,10 @@ class Ui_Dialog_rename(object):
 
         self.verticalLayout.addWidget(self.widget)
 
+
         self.retranslateUi(Dialog_rename)
 
         QMetaObject.connectSlotsByName(Dialog_rename)
-
     # setupUi
 
     def retranslateUi(self, Dialog_rename):
@@ -97,3 +102,4 @@ class Ui_Dialog_rename(object):
         self.button_save.setText(QCoreApplication.translate("Dialog_rename", u"save", None))
         self.button_cancel.setText(QCoreApplication.translate("Dialog_rename", u"cancel", None))
     # retranslateUi
+

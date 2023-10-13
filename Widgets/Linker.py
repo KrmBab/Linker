@@ -8,12 +8,17 @@
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
 
-from PySide6.QtCore import (QCoreApplication, QMetaObject, QSize, Qt)
-from PySide6.QtGui import (QFont, QIcon)
-from PySide6.QtWidgets import (QAbstractItemView, QComboBox, QFrame,
-                               QHBoxLayout, QLabel, QListView, QPushButton, QStatusBar, QVBoxLayout,
-                               QWidget)
-
+from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
+    QMetaObject, QObject, QPoint, QRect,
+    QSize, QTime, QUrl, Qt)
+from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
+    QFont, QFontDatabase, QGradient, QIcon,
+    QImage, QKeySequence, QLinearGradient, QPainter,
+    QPalette, QPixmap, QRadialGradient, QTransform)
+from PySide6.QtWidgets import (QAbstractItemView, QApplication, QComboBox, QFrame,
+    QHBoxLayout, QLabel, QListView, QMainWindow,
+    QPushButton, QSizePolicy, QStatusBar, QVBoxLayout,
+    QWidget)
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -27,125 +32,127 @@ class Ui_MainWindow(object):
         icon.addFile(u"../Static/link.png", QSize(), QIcon.Normal, QIcon.Off)
         MainWindow.setWindowIcon(icon)
         MainWindow.setStyleSheet(u"*{\n"
-                                 "color: #fff\n"
-                                 "}\n"
-                                 "QComboBox{\n"
-                                 "		background-color: rgb(74, 74, 74);\n"
-                                 "	border-radius: 5px;\n"
-                                 "	padding:5px;\n"
-                                 "}\n"
-                                 "\n"
-                                 "QComboBox:hover { \n"
-                                 "background-color: rgb(47, 47, 47); \n"
-                                 "}\n"
-                                 "QComboBox QAbstractItemView {\n"
-                                 "	background-color: rgb(47, 47, 47); \n"
-                                 "   border: none;\n"
-                                 "   border: 1px solid rgb(189, 189, 189);\n"
-                                 "	border-radius: 5px;\n"
-                                 "	padding:5px;\n"
-                                 "}\n"
-                                 "\n"
-                                 "QComboBox::drop-down{\n"
-                                 "	background-color: rgb(47, 47, 47); \n"
-                                 "	border-radius: 5px;\n"
-                                 "	padding:5px;\n"
-                                 "}\n"
-                                 "\n"
-                                 "QPushButton:hover { \n"
-                                 "background-color: rgb(47, 47, 47); \n"
-                                 "}\n"
-                                 "QListView::item:hover {\n"
-                                 "    background-color: rgb(120, 120, 120);\n"
-                                 "}\n"
-                                 "QListView::item:selected {\n"
-                                 "   background-color: rgb(135, 135, 135);\n"
-                                 "}\n"
-                                 "\n"
-                                 "QMenu{\n"
-                                 "background-color: rgb(74, 74, 74);\n"
-                                 "}\n"
-                                 "\n"
-                                 "#statusbar{\n"
-                                 "background-color: rgb(60, 60, 60);\n"
-                                 "}\n"
-                                 "\n"
-                                 "#SB{\n"
-                                 "border: none;\n"
-                                 "background-color: rgb(60, 60, 60);\n"
-                                 "}\n"
-                                 "\n"
-                                 "#centralwidget{\n"
-                                 "	background-color: rgb(74, 74, 74);\n"
-                                 ""
-                                 "}\n"
-                                 "\n"
-                                 "#button_add_file{\n"
-                                 "	border: 1px solid rgb(97, 131, 255);\n"
-                                 "	border-radius: 5px;\n"
-                                 "	padding:8px;\n"
-                                 "}\n"
-                                 "#button_add_app{\n"
-                                 "	border: 1px solid rgb(52, 218, 2);\n"
-                                 "	border-radius: 5px;\n"
-                                 "	padding:8px;\n"
-                                 "}\n"
-                                 "\n"
-                                 "#button_add_folder{\n"
-                                 "	border: 1px solid rgb(216, 0, 4);\n"
-                                 "	border-radius: 5px;\n"
-                                 "	padding:8px;\n"
-                                 "}\n"
-                                 "\n"
-                                 "#class_files{\n"
-                                 "	border: 1px solid rgb(97, 131, 255);\n"
-                                 "}\n"
-                                 "#class_apps{\n"
-                                 "	border: 1px solid rgb(52, 218, 2)\n"
-                                 "}\n"
-                                 "\n"
-                                 "#class_folders{\n"
-                                 "	border: 1px solid rgb(216, 0, 4);\n"
-                                 "}\n"
-                                 "\n"
-                                 "#listView_folders{\n"
-                                 "background-color: rgb(49, 49, 49);\n"
-                                 "border: 1px solid rgb(216, 0, 4);\n"
-                                 "	border-radius: 5px;\n"
-                                 "	padding:8px;\n"
-                                 "}\n"
-                                 "#listView_files{\n"
-                                 "background-color: rgb(49, 49, 49);\n"
-                                 "border: 1px solid rgb(97, 131, 255);\n"
-                                 "	border-radius: 5px;\n"
-                                 "	padding:8px;\n"
-                                 "}\n"
-                                 "#listView_apps{\n"
-                                 "background-color: rgb(49, 49, 49);\n"
-                                 "border: 1px solid rgb(52, 218, 2);\n"
-                                 "	border-radius: 5px;\n"
-                                 "	padding:8px;\n"
-                                 "}\n"
-                                 "\n"
-                                 "#listView_folde"
-                                 "rs:item{\n"
-                                 "border: none;\n"
-                                 "   border: 1px solid rgb(189, 189, 189);\n"
-                                 "	border-radius: 5px;\n"
-                                 "	padding:8px;\n"
-                                 "}\n"
-                                 "#listView_files:item{\n"
-                                 "border: none;\n"
-                                 "   border: 1px solid rgb(189, 189, 189);\n"
-                                 "	border-radius: 5px;\n"
-                                 "	padding:8px;\n"
-                                 "}\n"
-                                 "#listView_apps:item{\n"
-                                 "border: none;\n"
-                                 "   border: 1px solid rgb(189, 189, 189);\n"
-                                 "	border-radius: 5px;\n"
-                                 "	padding:8px;\n"
-                                 "}")
+"                color: #fff\n"
+"                }\n"
+"                QComboBox{\n"
+"                background-color: rgb(74, 74, 74);\n"
+"                border-radius: 5px;\n"
+"                padding:5px;\n"
+"                }\n"
+"\n"
+"                QComboBox:hover {\n"
+"                background-color: rgb(47, 47, 47);\n"
+"                }\n"
+"                QComboBox QAbstractItemView {\n"
+"                background-color: rgb(47, 47, 47);\n"
+"                border: none;\n"
+"                border: 1px solid rgb(189, 189, 189);\n"
+"                border-radius: 5px;\n"
+"                padding:5px;\n"
+"                }\n"
+"\n"
+"                QComboBox::drop-down{\n"
+"                background-color: rgb(47, 47, 47);\n"
+"                border-radius: 5px;\n"
+"                padding:5px;\n"
+"                }\n"
+"\n"
+"                QPushButton:hover {\n"
+"                background-color: rgb(47, 47, 47);\n"
+"                }\n"
+"                QListView::item:hover {\n"
+"        "
+                        "        background-color: rgb(120, 120, 120);\n"
+"                }\n"
+"                QListView::item:selected {\n"
+"                background-color: rgb(135, 135, 135);\n"
+"                }\n"
+"\n"
+"                QMenu{\n"
+"                background-color: rgb(74, 74, 74);\n"
+"                }\n"
+"\n"
+"                #statusbar{\n"
+"                background-color: rgb(60, 60, 60);\n"
+"                }\n"
+"\n"
+"                #SB{\n"
+"                border: none;\n"
+"                background-color: rgb(60, 60, 60);\n"
+"                }\n"
+"\n"
+"                #centralwidget{\n"
+"                background-color: rgb(74, 74, 74);\n"
+"                }\n"
+"\n"
+"                #button_add_file{\n"
+"                border: 1px solid rgb(97, 131, 255);\n"
+"                border-radius: 5px;\n"
+"                padding:8px;\n"
+"                }\n"
+"                #button_add_app{\n"
+"                border: 1px solid rgb(52, 218, 2);\n"
+"                border-radius: 5px;\n"
+"                p"
+                        "adding:8px;\n"
+"                }\n"
+"\n"
+"                #button_add_folder{\n"
+"                border: 1px solid rgb(216, 0, 4);\n"
+"                border-radius: 5px;\n"
+"                padding:8px;\n"
+"                }\n"
+"\n"
+"                #class_files{\n"
+"                border: 1px solid rgb(97, 131, 255);\n"
+"                }\n"
+"                #class_apps{\n"
+"                border: 1px solid rgb(52, 218, 2)\n"
+"                }\n"
+"\n"
+"                #class_folders{\n"
+"                border: 1px solid rgb(216, 0, 4);\n"
+"                }\n"
+"\n"
+"                #listView_folders{\n"
+"                background-color: rgb(49, 49, 49);\n"
+"                border: 1px solid rgb(216, 0, 4);\n"
+"                border-radius: 5px;\n"
+"                padding:8px;\n"
+"                }\n"
+"                #listView_files{\n"
+"                background-color: rgb(49, 49, 49);\n"
+"                border: 1px solid rgb(97, 131, 255);\n"
+"                border-radius: 5px;\n"
+"            "
+                        "    padding:8px;\n"
+"                }\n"
+"                #listView_apps{\n"
+"                background-color: rgb(49, 49, 49);\n"
+"                border: 1px solid rgb(52, 218, 2);\n"
+"                border-radius: 5px;\n"
+"                padding:8px;\n"
+"                }\n"
+"\n"
+"                #listView_folders:item{\n"
+"                border: none;\n"
+"                border: 1px solid rgb(189, 189, 189);\n"
+"                border-radius: 5px;\n"
+"                padding:8px;\n"
+"                }\n"
+"                #listView_files:item{\n"
+"                border: none;\n"
+"                border: 1px solid rgb(189, 189, 189);\n"
+"                border-radius: 5px;\n"
+"                padding:8px;\n"
+"                }\n"
+"                #listView_apps:item{\n"
+"                border: none;\n"
+"                border: 1px solid rgb(189, 189, 189);\n"
+"                border-radius: 5px;\n"
+"                padding:8px;\n"
+"                }\n"
+"            ")
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.centralwidget.setStyleSheet(u"")
@@ -183,6 +190,8 @@ class Ui_MainWindow(object):
 
         self.class_apps = QComboBox(self.frame_apps)
         self.class_apps.setObjectName(u"class_apps")
+        self.class_apps.setCursor(QCursor(Qt.PointingHandCursor))
+        self.class_apps.setContextMenuPolicy(Qt.CustomContextMenu)
 
         self.verticalLayout_2.addWidget(self.class_apps)
 
@@ -217,6 +226,7 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_4.addWidget(self.label_pathApps)
 
+
         self.verticalLayout_2.addWidget(self.frame_iconApps)
 
         self.button_add_app = QPushButton(self.frame_apps)
@@ -227,6 +237,7 @@ class Ui_MainWindow(object):
         self.button_add_app.setFont(font2)
 
         self.verticalLayout_2.addWidget(self.button_add_app)
+
 
         self.horizontalLayout_2.addWidget(self.frame_apps)
 
@@ -252,6 +263,8 @@ class Ui_MainWindow(object):
 
         self.class_files = QComboBox(self.frame_files)
         self.class_files.setObjectName(u"class_files")
+        self.class_files.setCursor(QCursor(Qt.PointingHandCursor))
+        self.class_files.setContextMenuPolicy(Qt.CustomContextMenu)
 
         self.verticalLayout_3.addWidget(self.class_files)
 
@@ -282,6 +295,7 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_5.addWidget(self.label_pathFiles)
 
+
         self.verticalLayout_3.addWidget(self.frame_iconFiles)
 
         self.button_add_file = QPushButton(self.frame_files)
@@ -290,6 +304,7 @@ class Ui_MainWindow(object):
         self.button_add_file.setStyleSheet(u"")
 
         self.verticalLayout_3.addWidget(self.button_add_file)
+
 
         self.horizontalLayout_2.addWidget(self.frame_files)
 
@@ -316,6 +331,8 @@ class Ui_MainWindow(object):
 
         self.class_folders = QComboBox(self.frame_folders)
         self.class_folders.setObjectName(u"class_folders")
+        self.class_folders.setCursor(QCursor(Qt.PointingHandCursor))
+        self.class_folders.setContextMenuPolicy(Qt.CustomContextMenu)
 
         self.verticalLayout_4.addWidget(self.class_folders)
 
@@ -346,6 +363,7 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_6.addWidget(self.label_pathFolders)
 
+
         self.verticalLayout_4.addWidget(self.frame_iconFolders)
 
         self.button_add_folder = QPushButton(self.frame_folders)
@@ -354,7 +372,9 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_4.addWidget(self.button_add_folder)
 
+
         self.horizontalLayout_2.addWidget(self.frame_folders)
+
 
         self.verticalLayout.addWidget(self.widget)
 
@@ -374,7 +394,6 @@ class Ui_MainWindow(object):
         self.listView_apps.clicked.connect(self.listView_folders.clearSelection)
 
         QMetaObject.connectSlotsByName(MainWindow)
-
     # setupUi
 
     def retranslateUi(self, MainWindow):
@@ -392,3 +411,4 @@ class Ui_MainWindow(object):
         self.label_pathFolders.setText("")
         self.button_add_folder.setText(QCoreApplication.translate("MainWindow", u"Add Folder +", None))
     # retranslateUi
+
