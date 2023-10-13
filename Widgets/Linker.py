@@ -397,6 +397,12 @@ class Ui_MainWindow(object):
         self.listView_folders.activated.connect(self.listView_files.clearSelection)
         self.listView_folders.clicked.connect(self.listView_files.clearSelection)
         self.listView_folders.pressed.connect(self.listView_files.clearSelection)
+        self.listView_apps.activated.connect(self.listView_folders.clearSelection)
+        self.listView_apps.clicked.connect(self.listView_folders.clearSelection)
+        self.listView_apps.pressed.connect(self.listView_folders.clearSelection)
+        self.listView_folders.activated.connect(self.listView_apps.clearSelection)
+        self.listView_folders.clicked.connect(self.listView_apps.clearSelection)
+        self.listView_folders.pressed.connect(self.listView_apps.clearSelection)
 
         QMetaObject.connectSlotsByName(MainWindow)
     # setupUi
