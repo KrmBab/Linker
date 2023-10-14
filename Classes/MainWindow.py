@@ -1,11 +1,12 @@
 import ctypes
 import os
 import sys
+from time import sleep
 
 import win32com.client
 from PySide6.QtCore import QStringListModel, Qt, QSize
 from PySide6.QtGui import QDropEvent, QDragEnterEvent, QIcon
-from PySide6.QtWidgets import QMainWindow, QSystemTrayIcon
+from PySide6.QtWidgets import QMainWindow, QSystemTrayIcon, QApplication
 
 from Widgets.Linker import Ui_MainWindow
 from .CutomWidget import ContextMenu, StatusBar
@@ -37,7 +38,6 @@ class Widget(Manager, QMainWindow):
 
     def __init__(self, parent=None):
         QMainWindow.__init__(self, parent)
-
         self.ui = Ui_MainWindow()
         icon = QIcon()
         icon.addFile(self.icon_path, QSize(), QIcon.Normal, QIcon.Off)
@@ -55,8 +55,8 @@ class Widget(Manager, QMainWindow):
         self.model_files.setObjectName("files")
 
         models_list = {self.model_folders.objectName(): {"model": self.model_folders, "class": self.ui.class_folders},
-                       self.model_apps.objectName():    {"model": self.model_apps, "class": self.ui.class_apps},
-                       self.model_files.objectName():   {"model": self.model_files, "class": self.ui.class_files}}
+                       self.model_apps.objectName(): {"model": self.model_apps, "class": self.ui.class_apps},
+                       self.model_files.objectName(): {"model": self.model_files, "class": self.ui.class_files}}
 
         listsViews = [
             {"list": self.ui.listView_apps, "icon": self.ui.label_iconApps, "path": self.ui.label_pathApps},
@@ -82,7 +82,8 @@ class Widget(Manager, QMainWindow):
         # connect to functions
         for lst in listsViews:
             lst["list"].doubleClicked.connect(self.open_item)
-            lst["list"].customContextMenuRequested.connect(lambda pos, obj=lst["list"]:self.show_contextMenu_items(pos, obj))
+            lst["list"].customContextMenuRequested.connect(
+                lambda pos, obj=lst["list"]: self.show_contextMenu_items(pos, obj))
             lst["list"].clicked.connect(self.show_path_and_icon)
 
         ########
@@ -111,30 +112,44 @@ class Widget(Manager, QMainWindow):
 
         categoryList = [self.ui.class_apps, self.ui.class_folders, self.ui.class_files]
         for cat in categoryList:
-            cat.customContextMenuRequested.connect(lambda pos, obj=cat:self.contextMenu_category.show_contextMenu(pos, obj))
+            cat.customContextMenuRequested.connect(
+                lambda pos, obj=cat: self.contextMenu_category.show_contextMenu(pos, obj))
         self.update_status()
 
-        tray_menu = ContextMenu({"Exit":self.stop})
+        tray_menu = ContextMenu({"Open": lambda reason=True: self.show_main_window(reason),
+                                 "Exit": self.close})
+
         self.tray_icon = QSystemTrayIcon(self)
         self.tray_icon.setIcon(icon)  # Icône de l'ordinateur
         self.tray_icon.setContextMenu(tray_menu)
-        self.tray_icon.activated.connect(self.show_window)
+        self.tray_icon.activated.connect(self.show_main_window)
         self.tray_icon.show()
 
     # region Tray
-    def stop(self):
-        sys.exit(0)
-
-    def show_window(self, reason):
-        if reason == QSystemTrayIcon.DoubleClick:
+    def show_main_window(self, reason):
+        '''
+        this function shows the MainWindow on tray icon doubleclick
+        :param reason: tray icon activated signal
+        :return:
+        '''
+        if reason == QSystemTrayIcon.DoubleClick or reason is True:
             self.show()
             self.activateWindow()
 
     def closeEvent(self, event):
-        event.ignore()
-        self.hide()
+        '''
+        change the close event to hide the window
+        :param event: closeEvent
+        :return:
+        '''
+        if event.spontaneous():
+            event.ignore()
+            self.hide()
+        else:
+            QApplication.quit()
 
-    #endregion
+
+    # endregion
 
     def Add_to_category(self):
         '''
@@ -142,6 +157,7 @@ class Widget(Manager, QMainWindow):
         :return:
         '''
         self.category_dialog.show_window(self.context_menu.contextmenuObject)
+
     def show_category_menu(self) -> None:
         '''
         this function shows the category menu
@@ -198,11 +214,11 @@ class Widget(Manager, QMainWindow):
             self.open_item()
 
     def show_contextMenu_items(self, position, obj):
-        # listeviws = [self.ui.listView_folders, self.ui.listView_files, self.ui.listView_apps]
-        # for lv in listeviws:
-        #     if lv != self.sender():
-        #         lv.clearSelection()
-
+        '''
+        this function shows listview item contextmenu
+        :param position: right clic mouse position
+        :param obj: current listview
+        :return:
+        '''
         self.show_path_and_icon()
         self.context_menu.show_contextMenu_position(position, obj)
-

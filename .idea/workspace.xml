@@ -8,17 +8,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="fa1b8ebc-afac-4698-95a0-f143cfaf117e" name="Default Changelist" comment="linker new version">
+    <list default="true" id="fa1b8ebc-afac-4698-95a0-f143cfaf117e" name="Default Changelist" comment="comment code">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Classes/CutomWidget.py" beforeDir="false" afterPath="$PROJECT_DIR$/Classes/CutomWidget.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Classes/DataBase.py" beforeDir="false" afterPath="$PROJECT_DIR$/Classes/DataBase.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Classes/MainWindow.py" beforeDir="false" afterPath="$PROJECT_DIR$/Classes/MainWindow.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Classes/Manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/Classes/Manager.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Classes/MangerClasses/Item_manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/Classes/MangerClasses/Item_manager.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Classes/MangerClasses/Widget_interface.py" beforeDir="false" afterPath="$PROJECT_DIR$/Classes/MangerClasses/Widget_interface.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Widgets/Dialog_CategoryMenu.py" beforeDir="false" afterPath="$PROJECT_DIR$/Widgets/Dialog_CategoryMenu.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Widgets/Dialog_addToClass.py" beforeDir="false" afterPath="$PROJECT_DIR$/Widgets/Dialog_addToClass.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Widgets/Dialog_rename.py" beforeDir="false" afterPath="$PROJECT_DIR$/Widgets/Dialog_rename.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Widgets/Linker.py" beforeDir="false" afterPath="$PROJECT_DIR$/Widgets/Linker.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -98,7 +91,7 @@
       <recent name="C:\Users\KrM\Documents\python_GUI\my_app" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.test">
+  <component name="RunManager" selected="Python.main">
     <configuration name="OpenDisigner" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="Linker" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -206,8 +199,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.test" />
         <item itemvalue="Python.main" />
+        <item itemvalue="Python.test" />
         <item itemvalue="Python.converter" />
         <item itemvalue="Python.test2" />
         <item itemvalue="Python.OpenDisigner" />
@@ -327,7 +320,15 @@
       <option name="project" value="LOCAL" />
       <updated>1697233976688</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="comment code">
+      <option name="closed" value="true" />
+      <created>1697286151012</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1697286151012</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -377,16 +378,12 @@
     <MESSAGE value="update paths" />
     <MESSAGE value="code clean" />
     <MESSAGE value="linker new version" />
-    <option name="LAST_COMMIT_MESSAGE" value="linker new version" />
+    <MESSAGE value="comment code" />
+    <option name="LAST_COMMIT_MESSAGE" value="comment code" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Classes/DataBase.py</url>
-          <line>51</line>
-          <option name="timeStamp" value="32" />
-        </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/test.py</url>
           <line>16</line>

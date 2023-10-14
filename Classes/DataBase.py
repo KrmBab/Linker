@@ -36,6 +36,7 @@ class DataBase:
         self.__mydb.commit()
 
     def __del__(self):
+        print("closae db")
         self.__mydb.close()
 
     def get_class(self, className: str):
