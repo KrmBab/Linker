@@ -17,7 +17,7 @@ class ItemManager:
     category_dialog: Category_Dialog
     dialog_rename: Rename_Dialog
     clipboard: QApplication.clipboard
-    
+
     manger_methods:ManagerMethods
 
 
@@ -121,7 +121,11 @@ class ItemManager:
     # region update_fromDB
 
     def update_from_db(self, msg: str = None):
-
+        '''
+        this function updates all listeView items from db
+        :param msg: if message is not non it will show as error and no update will be done
+        :return:
+        '''
         if msg is not None:
             self.messageBox.set_error(msg)
             

@@ -1,4 +1,4 @@
-from PySide6.QtCore import QStringListModel, Qt
+from PySide6.QtCore import QStringListModel
 from PySide6.QtWidgets import QDialog, QListView
 
 from Classes.CutomWidget import Rename_Dialog, MessageBox
@@ -8,9 +8,16 @@ from Widgets.Dialog_addToClass import Ui_Dialog_addToClass
 
 
 class Category_Dialog(QDialog, Ui_Dialog_addToClass):
+    """this class shows dialogue window to add item to a category"""
+
     item = None
     class_table:None
     def __init__(self, dataCenter:DataCenter, parent=None):
+        """
+
+        :param dataCenter: datacenter object from DataCenter
+        :param parent: caller application
+        """
         super().__init__(parent)
         self.setupUi(self)
         self.dataCenter = dataCenter
@@ -20,10 +27,12 @@ class Category_Dialog(QDialog, Ui_Dialog_addToClass):
         self.setWindowIcon(self.dataCenter.iconLinker)
 
     def accept(self) -> None:
-
+        """
+        add item to category when save button clicked
+        :return:
+        """
         item_tabl =  self.class_table.objectName()
-        message = self.dataCenter.dataBase.set_class(item_tabl,
-                                                     self.item.data(), self.class_items.currentText())
+        message = self.dataCenter.dataBase.set_class(item_tabl, self.item.data(), self.class_items.currentText())
         self.close()
 
     def show_window(self, object:QListView):

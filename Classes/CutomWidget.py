@@ -1,7 +1,6 @@
 from typing import Dict, Any
 
 from PySide6.QtCore import Qt, QObject
-from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QMenu, QStatusBar, QLabel, QListView, QMessageBox, QDialog
 
 # from Classes.Manager import DBManager
@@ -84,7 +83,6 @@ class ContextMenu(QMenu):
         super().__init__(None)
 
         self.setObjectName("context_menu")
-        # self.actions = actions
         for name, action in actions.items():
             self.addAction(f"{name}", action)
 

@@ -54,13 +54,10 @@ class Widget(Manager, QMainWindow):
         self.model_files = QStringListModel()
         self.model_files.setObjectName("files")
 
-        self.combobox_list = {self.ui.listView_apps.objectName(): self.ui.class_apps,
-                        self.ui.listView_folders.objectName(): self.ui.class_folders,
-                        self.ui.listView_files.objectName(): self.ui.class_files
-        }
         models_list = {self.model_folders.objectName(): {"model": self.model_folders, "class": self.ui.class_folders},
-                       self.model_apps.objectName(): {"model": self.model_apps, "class": self.ui.class_apps},
-                       self.model_files.objectName(): {"model": self.model_files, "class": self.ui.class_files, }}
+                       self.model_apps.objectName():    {"model": self.model_apps, "class": self.ui.class_apps},
+                       self.model_files.objectName():   {"model": self.model_files, "class": self.ui.class_files}}
+
         listsViews = [
             {"list": self.ui.listView_apps, "icon": self.ui.label_iconApps, "path": self.ui.label_pathApps},
             {"list": self.ui.listView_folders, "icon": self.ui.label_iconFolders, "path": self.ui.label_pathFolders},
@@ -69,7 +66,7 @@ class Widget(Manager, QMainWindow):
 
         dataBase = DataBase(self.db_path)
         statusbar = StatusBar(self.ui.statusbar)
-        # Data_center()
+
         self.dataCenter = DataCenter(models_dict=models_list, listsViews_dict=listsViews,
                                      dataBase=dataBase, iconLinker=icon, statusbar=statusbar)
         super().__init__(self.dataCenter)
@@ -83,11 +80,10 @@ class Widget(Manager, QMainWindow):
         self.ui.listView_files.setModel(self.model_files)
 
         # connect to functions
-        listViewList = [self.ui.listView_folders, self.ui.listView_files, self.ui.listView_apps]
-        for lst in listViewList:
-            lst.doubleClicked.connect(self.open_item)
-            lst.customContextMenuRequested.connect(lambda pos, obj=lst:self.show_contextMenu_items(pos, obj))
-            lst.clicked.connect(self.show_path)
+        for lst in listsViews:
+            lst["list"].doubleClicked.connect(self.open_item)
+            lst["list"].customContextMenuRequested.connect(lambda pos, obj=lst["list"]:self.show_contextMenu_items(pos, obj))
+            lst["list"].clicked.connect(self.show_path_and_icon)
 
         ########
         self.update_category_fromDB()
@@ -108,7 +104,7 @@ class Widget(Manager, QMainWindow):
                                 "Rename": self.rename_item,
                                 "Delete": self.delete_item}
 
-        contextMenu_category_actions = {"Edite": self.sh}
+        contextMenu_category_actions = {"Edite": self.show_category_menu}
 
         self.context_menu = ContextMenu(context_menu_actions)
         self.contextMenu_category = ContextMenu(contextMenu_category_actions)
@@ -141,15 +137,33 @@ class Widget(Manager, QMainWindow):
     #endregion
 
     def Add_to_category(self):
+        '''
+        this function shows the add to category Dialog
+        :return:
+        '''
         self.category_dialog.show_window(self.context_menu.contextmenuObject)
-    def sh(self):
+    def show_category_menu(self) -> None:
+        '''
+        this function shows the category menu
+        :return:
+        '''
         self.category_menu.show_category_menu(self.contextMenu_category.contextmenuObject)
 
     def dragEnterEvent(self, event: QDragEnterEvent):
+        '''
+        this function accepte the drag item if it hase urls path
+        :param event: QDragEnterEvent
+        :return:
+        '''
         if event.mimeData().hasUrls():
             event.acceptProposedAction()
 
     def dropEvent(self, event: QDropEvent):
+        '''
+        this function checks the dropped item to determinate in witch DB table it should be added
+        :param event: QDropEvent
+        :return:
+        '''
         mime_data = event.mimeData()
         if mime_data.hasUrls():
 
@@ -171,6 +185,11 @@ class Widget(Manager, QMainWindow):
                 self.messageBox.set_info(f"item added to {model.objectName()} list")
 
     def keyPressEvent(self, event):
+        '''
+        this function add action to keyboard keys (Enter:open item, Delete: delete item)
+        :param event:
+        :return:
+        '''
         # This function is called when a key is pressed
         key = event.key()
         if key == Qt.Key.Key_Delete:
@@ -184,6 +203,6 @@ class Widget(Manager, QMainWindow):
         #     if lv != self.sender():
         #         lv.clearSelection()
 
-        self.show_path()
+        self.show_path_and_icon()
         self.context_menu.show_contextMenu_position(position, obj)
 
