@@ -11,7 +11,7 @@
     <list default="true" id="fa1b8ebc-afac-4698-95a0-f143cfaf117e" name="Default Changelist" comment="comment code">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Classes/DataBase.py" beforeDir="false" afterPath="$PROJECT_DIR$/Classes/DataBase.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Classes/MainWindow.py" beforeDir="false" afterPath="$PROJECT_DIR$/Classes/MainWindow.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Classes/MangerClasses/Widget_interface.py" beforeDir="false" afterPath="$PROJECT_DIR$/Classes/MangerClasses/Widget_interface.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -328,7 +328,15 @@
       <option name="project" value="LOCAL" />
       <updated>1697286151012</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="comment code">
+      <option name="closed" value="true" />
+      <created>1697294438266</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1697294438266</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">

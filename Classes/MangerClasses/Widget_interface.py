@@ -11,8 +11,9 @@ class Category_Dialog(QDialog, Ui_Dialog_addToClass):
     """this class shows dialogue window to add item to a category"""
 
     item = None
-    class_table:None
-    def __init__(self, dataCenter:DataCenter, parent=None):
+    class_table: None
+
+    def __init__(self, dataCenter: DataCenter, parent=None):
         """
 
         :param dataCenter: datacenter object from DataCenter
@@ -31,11 +32,11 @@ class Category_Dialog(QDialog, Ui_Dialog_addToClass):
         add item to category when save button clicked
         :return:
         """
-        item_tabl =  self.class_table.objectName()
+        item_tabl = self.class_table.objectName()
         message = self.dataCenter.dataBase.set_class(item_tabl, self.item.data(), self.class_items.currentText())
         self.close()
 
-    def show_window(self, object:QListView):
+    def show_window(self, object: QListView):
         self.item = object.selectedIndexes()[0]
         self.class_table = object.model()
         self.update_category()
@@ -54,7 +55,8 @@ class Category_Dialog(QDialog, Ui_Dialog_addToClass):
 class Category_Menu(QDialog, Ui_Dialog_CategoryMenu):
     dataCenter = None
     object_category = None
-    def __init__(self, dataCenter:DataCenter, parent=None):
+
+    def __init__(self, dataCenter: DataCenter, parent=None):
         super().__init__(parent)
         self.setupUi(self)
         self.dataCenter = dataCenter
@@ -66,8 +68,7 @@ class Category_Menu(QDialog, Ui_Dialog_CategoryMenu):
 
         self.button_add.clicked.connect(self.add_category)
         self.button_delete.clicked.connect(self.remove_category)
-        # self.button_edit.clicked.connect(edite_method)
-
+        self.button_edit.clicked.connect(self.rename_category)
 
     def show_category_menu(self, object):
         self.object_category = object
@@ -91,12 +92,32 @@ class Category_Menu(QDialog, Ui_Dialog_CategoryMenu):
             else:
                 self.update_category_items()
 
+    def rename_category(self):
+        category_index = self.listView_category.selectedIndexes()
+        if not category_index:
+            return
+        category_name = category_index[0].data()
+        self.dialog_rename.lineEdit.setText(category_name)
+        save = self.dialog_rename.exec()
+        if save:
+            class_tab = self.object_category.objectName()
+            item_tab = class_tab.replace("class_", "")
+            category_new_name = self.dialog_rename.lineEdit.text()
+            msg = self.dataCenter.dataBase.change_class_name(self.object_category.objectName(), item_tab, category_name,
+                                                             category_new_name)
+            if msg is not None:
+                self.messageBox.set_error(msg)
+            else:
+                self.update_category_items()
+
     def remove_category(self):
-        category_name = self.listView_category.selectedIndexes()[0].data()
+        category_index = self.listView_category.selectedIndexes()
+        if not category_index:
+            return
+        category_name = category_index[0].data()
         msg = self.dataCenter.dataBase.remove_class(self.object_category.objectName(), category_name)
         if msg is not None:
             self.messageBox.set_error(msg)
-            self.messageBox.exec()
         else:
             self.update_category_items()
 

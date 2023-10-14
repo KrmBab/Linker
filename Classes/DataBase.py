@@ -63,6 +63,15 @@ class DataBase:
         except:
             return f"{class_name} is already exist on you {table} list"
 
+    def change_class_name(self, table: str, table_item: str, old_name: str, new_name: str):
+        query = f'UPDATE {table} SET class_name = "{new_name}" WHERE class_name = "{old_name}"'
+        query2 = f'UPDATE {table_item} SET class = "{new_name}" WHERE class = "{old_name}"'
+        try:
+            self.commit(query)
+            self.commit(query2)
+        except db.Error as e:
+            print(f"SQLite error: {e}")
+
     def remove_class(self, table: str, class_name: str) -> str:
         try:
             query = f'DELETE FROM {table} WHERE class_name = "{class_name}"'
