@@ -63,8 +63,8 @@ class Category_Menu(QDialog, Ui_Dialog_CategoryMenu):
         self.model_category = QStringListModel()
         self.listView_category.setModel(self.model_category)
 
-        self.dialog_rename = Rename_Dialog()
-        self.messageBox = MessageBox()
+        self.dialog_rename = Rename_Dialog(self)
+        self.messageBox = MessageBox(self)
 
         self.button_add.clicked.connect(self.add_category)
         self.button_delete.clicked.connect(self.remove_category)
