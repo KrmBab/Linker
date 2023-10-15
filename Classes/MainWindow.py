@@ -9,11 +9,11 @@ from PySide6.QtGui import QDropEvent, QDragEnterEvent, QIcon
 from PySide6.QtWidgets import QMainWindow, QSystemTrayIcon, QApplication
 
 from Widgets.Linker import Ui_MainWindow
-from .CutomWidget import ContextMenu, StatusBar
+from .CutomWidget import ContextMenu, StatusBar, MessageBox
 from .DataBase import DataBase
 from .Manager import Manager, DataCenter
 
-
+icon_path = "Static/link.png"
 def check_single_instance():
     # Define the path to the lock file
     mutex_name = "LinkerMutex"
@@ -22,14 +22,19 @@ def check_single_instance():
 
     # Check if the mutex already exists (another instance is running)
     if ctypes.windll.kernel32.GetLastError() == 183:
+        app = QApplication(sys.argv)
         print("Another instance of the application is already running.")
+        messageBox = MessageBox()
+        icon = QIcon()
+        icon.addFile(icon_path, QSize(), QIcon.Normal, QIcon.Off)
+        messageBox.setWindowIcon(icon)
+        messageBox.set_warning("Linker is already running")
         sys.exit(1)
 
 
 class Widget(Manager, QMainWindow):
     ###
     db_path = os.path.join(os.getenv('APPDATA'), 'Linker/LinkerDB.db')
-    icon_path = "Static/link.png"
     startup_folder = os.path.join(os.getenv('APPDATA'), 'Microsoft', 'Windows', 'Start Menu', 'Programs',
                                   'Startup') + "\\Linker.lnk"
     ###
@@ -42,7 +47,7 @@ class Widget(Manager, QMainWindow):
         QMainWindow.__init__(self, parent)
         self.ui = Ui_MainWindow()
         icon = QIcon()
-        icon.addFile(self.icon_path, QSize(), QIcon.Normal, QIcon.Off)
+        icon.addFile(icon_path, QSize(), QIcon.Normal, QIcon.Off)
 
         self.ui.setupUi(self)
         self.setWindowIcon(icon)
@@ -138,6 +143,7 @@ class Widget(Manager, QMainWindow):
         '''
         if reason == QSystemTrayIcon.DoubleClick or reason is True:
             self.show()
+            self.showNormal()
             self.activateWindow()
 
     def closeEvent(self, event):
@@ -148,6 +154,8 @@ class Widget(Manager, QMainWindow):
         '''
         if event.spontaneous():
             event.ignore()
+            self.showMinimized()
+            sleep(0.1)
             self.hide()
         else:
             QApplication.quit()
