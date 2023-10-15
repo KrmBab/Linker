@@ -1,6 +1,7 @@
 from typing import Dict, Any
 
 from PySide6.QtCore import Qt, QObject
+from PySide6.QtGui import QAction
 from PySide6.QtWidgets import QMenu, QStatusBar, QLabel, QListView, QMessageBox, QDialog
 
 # from Classes.Manager import DBManager
@@ -79,17 +80,25 @@ class StatusBar():
 class ContextMenu(QMenu):
     contextmenuObject:QObject
 
-    def __init__(self, actions: Dict[str, Any]):
+    def __init__(self, actions: [str, Any]):
         super().__init__(None)
 
         self.setObjectName("context_menu")
-        for name, action in actions.items():
-            self.addAction(f"{name}", action)
-
+        for action in actions:
+            if action[2]:
+                checkbox_action = QAction(action[0], self, checkable=True)
+                checkbox_action.triggered.connect(action[1])
+                self.addAction(checkbox_action)
+            else:
+                self.addAction(action[0], action[1])
         # self.setStyleSheet("""
         # #context_menu::item:hover {
         # background-color: rgb(120, 120, 120);}
         # """)
+    def set_check_stat(self, action_name:str, stat:bool):
+        for action in self.actions():
+            if action.text() == action_name:
+                action.setChecked(stat)
 
     def show_contextMenu_position(self, position, sender: QListView):
         # Get the index of the selected item

@@ -30,6 +30,8 @@ class Widget(Manager, QMainWindow):
     ###
     db_path = os.path.join(os.getenv('APPDATA'), 'Linker/LinkerDB.db')
     icon_path = "Static/link.png"
+    startup_folder = os.path.join(os.getenv('APPDATA'), 'Microsoft', 'Windows', 'Start Menu', 'Programs',
+                                  'Startup') + "\\Linker.lnk"
     ###
 
     __foldersCount = 0
@@ -98,14 +100,14 @@ class Widget(Manager, QMainWindow):
         self.update_from_db()
         #########################
         # Create a context menu
-        context_menu_actions = {"+Add_to_category+": self.Add_to_category,
-                                "Open": self.open_item,
-                                "Open_path": self.open_item_dir,
-                                "Copy_path": self.copy_item_path,
-                                "Rename": self.rename_item,
-                                "Delete": self.delete_item}
+        context_menu_actions = [["+Add_to_category+", self.Add_to_category, False],
+                                ["Open", self.open_item, False],
+                                ["Open_path", self.open_item_dir, False],
+                                ["Copy_path", self.copy_item_path, False],
+                                ["Rename", self.rename_item, False],
+                                ["Delete", self.delete_item, False]]
 
-        contextMenu_category_actions = {"Edite": self.show_category_menu}
+        contextMenu_category_actions = [["Edite", self.show_category_menu, False]]
 
         self.context_menu = ContextMenu(context_menu_actions)
         self.contextMenu_category = ContextMenu(contextMenu_category_actions)
@@ -116,8 +118,10 @@ class Widget(Manager, QMainWindow):
                 lambda pos, obj=cat: self.contextMenu_category.show_contextMenu(pos, obj))
         self.update_status()
 
-        tray_menu = ContextMenu({"Open": lambda reason=True: self.show_main_window(reason),
-                                 "Exit": self.close})
+        tray_menu = ContextMenu([["autorun",self.autorun,True],
+                                ["Open", lambda reason=True: self.show_main_window(reason), False],
+                                ["Exit", self.close, False]])
+        tray_menu.set_check_stat("autorun",os.path.exists(self.startup_folder))
 
         self.tray_icon = QSystemTrayIcon(self)
         self.tray_icon.setIcon(icon)  # Icône de l'ordinateur
@@ -222,3 +226,18 @@ class Widget(Manager, QMainWindow):
         '''
         self.show_path_and_icon()
         self.context_menu.show_contextMenu_position(position, obj)
+
+    def autorun(self, creat: bool = False):
+        '''
+
+        :param creat:
+        :return:
+        '''
+        if creat:
+            script_path = os.path.abspath(sys.argv[0])
+            shell = win32com.client.Dispatch("WScript.Shell")
+            shortcut = shell.CreateShortCut(self.startup_folder)
+            shortcut.TargetPath = script_path
+            shortcut.Save()
+        else:
+            os.remove(self.startup_folder)

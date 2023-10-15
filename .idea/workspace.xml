@@ -8,10 +8,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="fa1b8ebc-afac-4698-95a0-f143cfaf117e" name="Default Changelist" comment="comment code">
+    <list default="true" id="fa1b8ebc-afac-4698-95a0-f143cfaf117e" name="Default Changelist" comment="add edit category option">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Classes/DataBase.py" beforeDir="false" afterPath="$PROJECT_DIR$/Classes/DataBase.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Classes/MangerClasses/Widget_interface.py" beforeDir="false" afterPath="$PROJECT_DIR$/Classes/MangerClasses/Widget_interface.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Classes/CutomWidget.py" beforeDir="false" afterPath="$PROJECT_DIR$/Classes/CutomWidget.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Classes/MainWindow.py" beforeDir="false" afterPath="$PROJECT_DIR$/Classes/MainWindow.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -336,7 +336,15 @@
       <option name="project" value="LOCAL" />
       <updated>1697294438266</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="add edit category option">
+      <option name="closed" value="true" />
+      <created>1697321692024</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1697321692024</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -387,15 +395,16 @@
     <MESSAGE value="code clean" />
     <MESSAGE value="linker new version" />
     <MESSAGE value="comment code" />
-    <option name="LAST_COMMIT_MESSAGE" value="comment code" />
+    <MESSAGE value="add edit category option" />
+    <option name="LAST_COMMIT_MESSAGE" value="add edit category option" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/test.py</url>
-          <line>16</line>
-          <option name="timeStamp" value="36" />
+          <url>file://$PROJECT_DIR$/Classes/MainWindow.py</url>
+          <line>139</line>
+          <option name="timeStamp" value="45" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
