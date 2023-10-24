@@ -109,4 +109,4 @@ class ContextMenu(QMenu):
     def show_contextMenu(self, position, sender:Any):
         self.contextmenuObject = sender
         self.exec(sender.mapToGlobal(position))
-
+    

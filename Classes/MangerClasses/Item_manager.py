@@ -89,6 +89,7 @@ class ItemManager:
         # Create a folder selection dialog
         file_path = QFileDialog.getOpenFileName()[0]
         if file_path != "":
+
             if ".lnk" in file_path:
                 shell = win32com.client.Dispatch("WScript.Shell")
                 file_path = shell.CreateShortCut(file_path).Targetpath
@@ -97,23 +98,22 @@ class ItemManager:
             if ".exe" not in file_name:
                 msg = self.dataCenter.dataBase.add_item(self.dataCenter.models_dict["files"]["model"].objectName(),
                                                         file_name, file_path)
-
             else:
                 # Show the warning message box and wait for user interaction
                 self.messageBox.set_warning("This is an .exe file it will be add to Apps list")
-                
+
                 msg = self.dataCenter.dataBase.add_item(self.dataCenter.models_dict["apps"]["model"].objectName(),
                                                         file_name, file_path)
-
             self.update_from_db(msg)
 
     def add_app(self):
         # Create a folder selection dialog
-        selected_app = QFileDialog.getOpenFileName(filter="*.exe")
-        if selected_app[0] != "":
-            app_name = os.path.basename(selected_app[0])
+        selected_app = QFileDialog.getOpenFileName(filter="*.exe")[0]
+        
+        if selected_app != "":
+            app_name = os.path.basename(selected_app)
             msg = self.dataCenter.dataBase.add_item(self.dataCenter.models_dict["apps"]["model"].objectName(), app_name,
-                                                    selected_app[0])
+                                                    selected_app)
             self.update_from_db(msg)
 
     # endregion
@@ -132,6 +132,7 @@ class ItemManager:
         for model in self.dataCenter.models_dict.values():
             model["model"].setStringList(
                 self.dataCenter.dataBase.get_all_names(model["model"].objectName(), model["class"].currentText()))
+        self.manger_methods.update_status()
 
     def update_apps_fromDB(self):
         model = self.dataCenter.models_dict["apps"]
